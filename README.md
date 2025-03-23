@@ -96,6 +96,9 @@ npm run dev
 
 **Vinay Koirala**
 Lecturer - Itahari International College
+<br>
 📧 Professional: binaya.koirala@iic.edu.np
+<br>
 📧 Personal: koiralavinay@gmail.com
+<br>
 🐱 GitHub: https://github.com/v-eenay/react-firebase-blog.git

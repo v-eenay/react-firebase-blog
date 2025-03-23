@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
+import { FaGoogle, FaFacebook } from 'react-icons/fa';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -13,7 +14,25 @@ export default function Signup() {
   });
   const [error, setError] = useState('');
 
-  const { signup } = useAuth();
+  const { signup, signInWithGoogle, signInWithFacebook } = useAuth();
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      navigate('/blog');
+    } catch (err: any) {
+      setError(err.message || 'Failed to sign in with Google');
+    }
+  };
+
+  const handleFacebookSignIn = async () => {
+    try {
+      await signInWithFacebook();
+      navigate('/blog');
+    } catch (err: any) {
+      setError(err.message || 'Failed to sign in with Facebook');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,13 +141,34 @@ export default function Signup() {
             </div>
           </div>
 
-          <div>
+          <div className="space-y-4">
             <button
               type="submit"
               className="btn-retro w-full py-3"
             >
               Create Account
             </button>
+
+            <div className="flex items-center justify-center">
+              <span className="px-2 text-[var(--color-accent)]">Or continue with</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                className="btn-retro flex items-center justify-center gap-2"
+              >
+                <FaGoogle /> Google
+              </button>
+              <button
+                type="button"
+                onClick={handleFacebookSignIn}
+                className="btn-retro flex items-center justify-center gap-2"
+              >
+                <FaFacebook /> Facebook
+              </button>
+            </div>
           </div>
         </form>
       </motion.div>

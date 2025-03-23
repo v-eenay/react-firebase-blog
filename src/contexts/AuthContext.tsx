@@ -6,7 +6,11 @@ import {
   signOut,
   onAuthStateChanged,
   User as FirebaseUser,
-  updateProfile
+  updateProfile,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signInWithPopup,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
@@ -28,6 +32,9 @@ interface AuthContextType {
   signup: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
   updateUserProfile: (displayName: string, photoURL?: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
+  signInWithFacebook: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -102,13 +109,56 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser((prev) => prev ? { ...prev, displayName, photoURL: photoURL || null } : null);
   };
 
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const { user: firebaseUser } = await signInWithPopup(auth, provider);
+    if (!firebaseUser.email) return;
+
+    const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+    if (!userDoc.exists()) {
+      await setDoc(doc(db, 'users', firebaseUser.uid), {
+        displayName: firebaseUser.displayName,
+        email: firebaseUser.email,
+        photoURL: firebaseUser.photoURL,
+        role: 'user',
+        status: 'active',
+        createdAt: new Date().toISOString()
+      });
+    }
+  };
+
+  const signInWithFacebook = async () => {
+    const provider = new FacebookAuthProvider();
+    const { user: firebaseUser } = await signInWithPopup(auth, provider);
+    if (!firebaseUser.email) return;
+
+    const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+    if (!userDoc.exists()) {
+      await setDoc(doc(db, 'users', firebaseUser.uid), {
+        displayName: firebaseUser.displayName,
+        email: firebaseUser.email,
+        photoURL: firebaseUser.photoURL,
+        role: 'user',
+        status: 'active',
+        createdAt: new Date().toISOString()
+      });
+    }
+  };
+
+  const resetPassword = async (email: string) => {
+    await sendPasswordResetEmail(auth, email);
+  };
+
   const value = {
     user,
     loading,
     login,
     signup,
     logout,
-    updateUserProfile
+    updateUserProfile,
+    signInWithGoogle,
+    signInWithFacebook,
+    resetPassword
   };
 
   return (
