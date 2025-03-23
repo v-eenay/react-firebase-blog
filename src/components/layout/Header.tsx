@@ -10,9 +10,13 @@ const navigation = [
   { name: 'About', href: '/about' }
 ];
 
-const userNavigation = [
-  { name: 'Profile', href: '/profile' },
-  { name: 'Logout' }
+const adminNavigation = [
+  { name: 'Admin Dashboard', href: '/admin' }
+];
+
+const userLinks = [
+  { name: 'My Dashboard', href: '/dashboard' },
+  { name: 'Profile', href: '/profile' }
 ];
 
 function classNames(...classes) {
@@ -57,16 +61,15 @@ export default function Header() {
                 <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
                   {user ? (
                     <div className="flex items-center space-x-4">
-                      <Link to="/profile" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-                        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--color-ink)]">
-                          <img
-                            src={user.photoURL || `https://api.dicebear.com/6.x/personas/svg?seed=${user.displayName || user.email}`}
-                            alt={user.displayName || 'Profile'}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <span className="font-serif text-[var(--color-ink)]">{user.displayName || user.email}</span>
-                      </Link>
+                      {(user.role === 'admin' ? adminNavigation : userLinks).map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)]"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
                       <button onClick={() => logout()} className="btn-retro">Logout</button>
                     </div>
                   ) : (
@@ -84,7 +87,6 @@ export default function Header() {
                 </div>
               </div>
             </div>
-  
             <Disclosure.Panel className="sm:hidden bg-[var(--color-paper)] border-t-2 border-[var(--color-ink)]">
               <div className="space-y-1 pb-3 pt-2">
                 {navigation.map((item) => (
@@ -102,36 +104,16 @@ export default function Header() {
                     {item.name}
                   </Disclosure.Button>
                 ))}
-                <div className="pt-4 pb-3 border-t border-[var(--color-ink)]/20">
-                  {user ? (
-                    <>
-                      <Link
-                        to="/profile"
-                        className="flex items-center px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200"
-                      >
-                        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--color-ink)] mr-3">
-                          <img
-                            src={user.photoURL || `https://api.dicebear.com/6.x/personas/svg?seed=${user.displayName || user.email}`}
-                            alt={user.displayName || 'Profile'}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        Profile
-                      </Link>
-                      <button
-                        onClick={() => logout()}
-                        className="block w-full text-left px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link to="/login" className="block w-full text-left px-4 py-3 text-base font-serif font-medium bg-[var(--color-ink)] text-[var(--color-paper)] hover:opacity-90 transition-colors duration-200">Login</Link>
-                      <Link to="/signup" className="block w-full text-left px-4 py-3 text-base font-serif font-medium bg-[var(--color-ink)] text-[var(--color-paper)] hover:opacity-90 transition-colors duration-200">Sign Up</Link>
-                    </>
-                  )}
-                </div>
+                {user && (
+                  <>
+                    <Link to="/profile" className="flex items-center px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200">
+                      Profile
+                    </Link>
+                    <button onClick={() => logout()} className="block w-full text-left px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200">
+                      Logout
+                    </button>
+                  </>
+                )}
               </div>
             </Disclosure.Panel>
           </>

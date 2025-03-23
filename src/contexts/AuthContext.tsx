@@ -15,6 +15,10 @@ interface User {
   email: string | null;
   displayName: string | null;
   photoURL?: string | null;
+  role?: 'user' | 'admin';
+  status?: 'active' | 'banned';
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface AuthContextType {
@@ -50,7 +54,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           uid: firebaseUser.uid,
           email: firebaseUser.email,
           displayName: firebaseUser.displayName || userData?.displayName || null,
-          photoURL: firebaseUser.photoURL || userData?.photoURL || null
+          photoURL: firebaseUser.photoURL || userData?.photoURL || null,
+          role: userData?.role || 'user',
+          status: userData?.status || 'active',
+          createdAt: userData?.createdAt,
+          updatedAt: userData?.updatedAt
         });
       } else {
         setUser(null);
@@ -67,6 +75,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await setDoc(doc(db, 'users', firebaseUser.uid), {
       displayName: name,
       email,
+      role: 'user',
+      status: 'active',
       createdAt: new Date().toISOString()
     });
   };
