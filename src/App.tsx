@@ -8,6 +8,7 @@ import Categories from './pages/Categories';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import About from './pages/About';
+import Profile from './pages/Profile';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -51,7 +52,15 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
                 <Route path="/about" element={<About />} />
-</Routes>
+            <Route
+              path="/profile/:id?"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </Layout>
       </Router>
     </AuthProvider>

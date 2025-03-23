@@ -10,6 +10,11 @@ const navigation = [
   { name: 'About', href: '/about' }
 ];
 
+const userNavigation = [
+  { name: 'Profile', href: '/profile' },
+  { name: 'Logout' }
+];
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -51,7 +56,19 @@ export default function Header() {
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
                   {user ? (
-                    <button onClick={() => logout()} className="btn-retro">Logout</button>
+                    <div className="flex items-center space-x-4">
+                      <Link to="/profile" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--color-ink)]">
+                          <img
+                            src={user.photoURL || `https://api.dicebear.com/6.x/personas/svg?seed=${user.displayName || user.email}`}
+                            alt={user.displayName || 'Profile'}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <span className="font-serif text-[var(--color-ink)]">{user.displayName || user.email}</span>
+                      </Link>
+                      <button onClick={() => logout()} className="btn-retro">Logout</button>
+                    </div>
                   ) : (
                     <>
                       <Link to="/login" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">Login</Link>
@@ -87,7 +104,27 @@ export default function Header() {
                 ))}
                 <div className="pt-4 pb-3 border-t border-[var(--color-ink)]/20">
                   {user ? (
-                    <button onClick={() => logout()} className="block w-full text-left px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200">Logout</button>
+                    <>
+                      <Link
+                        to="/profile"
+                        className="flex items-center px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200"
+                      >
+                        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--color-ink)] mr-3">
+                          <img
+                            src={user.photoURL || `https://api.dicebear.com/6.x/personas/svg?seed=${user.displayName || user.email}`}
+                            alt={user.displayName || 'Profile'}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        Profile
+                      </Link>
+                      <button
+                        onClick={() => logout()}
+                        className="block w-full text-left px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200"
+                      >
+                        Logout
+                      </button>
+                    </>
                   ) : (
                     <>
                       <Link to="/login" className="block w-full text-left px-4 py-3 text-base font-serif font-medium bg-[var(--color-ink)] text-[var(--color-paper)] hover:opacity-90 transition-colors duration-200">Login</Link>
