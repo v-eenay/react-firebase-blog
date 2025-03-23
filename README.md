@@ -99,7 +99,3 @@ Lecturer - Itahari International College
 📧 Professional: binaya.koirala@iic.edu.np
 📧 Personal: koiralavinay@gmail.com
 🐱 GitHub: https://github.com/v-eenay/react-firebase-blog.git
-
----
-
-🛠️ Built with passion for retro design and modern web technologies
