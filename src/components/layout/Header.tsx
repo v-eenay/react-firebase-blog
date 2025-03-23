@@ -3,15 +3,14 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-
-
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Blog', href: '/blog' },
   { name: 'Categories', href: '/categories' },
+  { name: 'About', href: '/about' }
 ];
 
-function classNames(...classes: string[]) {
+function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -52,31 +51,18 @@ export default function Header() {
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
                   {user ? (
-                    <button
-                      onClick={() => logout()}
-                      className="btn-retro"
-                    >
-                      Logout
-                    </button>
+                    <button onClick={() => logout()} className="btn-retro">Logout</button>
                   ) : (
                     <>
-                      <Link to="/login" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">
-                        Login
-                      </Link>
-                      <Link to="/signup" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">
-                        Sign Up
-                      </Link>
+                      <Link to="/login" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">Login</Link>
+                      <Link to="/signup" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">Sign Up</Link>
                     </>
                   )}
                 </div>
                 <div className="-mr-2 flex items-center sm:hidden">
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-[var(--color-accent)] hover:bg-[var(--color-paper)]/80 hover:text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[var(--color-ink)]">
                     <span className="sr-only">Open main menu</span>
-                    {open ? (
-                      <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                    ) : (
-                      <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                    )}
+                    {open ? <XMarkIcon className="block h-6 w-6" aria-hidden="true" /> : <Bars3Icon className="block h-6 w-6" aria-hidden="true" />}
                   </Disclosure.Button>
                 </div>
               </div>
@@ -101,32 +87,11 @@ export default function Header() {
                 ))}
                 <div className="pt-4 pb-3 border-t border-[var(--color-ink)]/20">
                   {user ? (
-                    <button
-                      onClick={() => logout()}
-                      className="block w-full text-left px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200"
-                    >
-                      Logout
-                    </button>
+                    <button onClick={() => logout()} className="block w-full text-left px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200">Logout</button>
                   ) : (
                     <>
-                      <button
-                        onClick={() => {
-                          setAuthMode('login');
-                          setIsAuthModalOpen(true);
-                        }}
-                        className="block w-full text-left px-4 py-3 text-base font-serif font-medium bg-[var(--color-ink)] text-[var(--color-paper)] hover:opacity-90 transition-colors duration-200"
-                      >
-                        Login
-                      </button>
-                      <button
-                        onClick={() => {
-                          setAuthMode('signup');
-                          setIsAuthModalOpen(true);
-                        }}
-                        className="block w-full text-left px-4 py-3 text-base font-serif font-medium bg-[var(--color-ink)] text-[var(--color-paper)] hover:opacity-90 transition-colors duration-200"
-                      >
-                        Sign Up
-                      </button>
+                      <Link to="/login" className="block w-full text-left px-4 py-3 text-base font-serif font-medium bg-[var(--color-ink)] text-[var(--color-paper)] hover:opacity-90 transition-colors duration-200">Login</Link>
+                      <Link to="/signup" className="block w-full text-left px-4 py-3 text-base font-serif font-medium bg-[var(--color-ink)] text-[var(--color-paper)] hover:opacity-90 transition-colors duration-200">Sign Up</Link>
                     </>
                   )}
                 </div>
@@ -135,8 +100,6 @@ export default function Header() {
           </>
         )}
       </Disclosure>
-
-      
     </>
   );
 }
