@@ -13,6 +13,7 @@ import {
   sendPasswordResetEmail
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { jsonService } from '../services/jsonService';
 
 interface User {
   uid: string;
@@ -89,7 +90,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const login = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    try {
+      // First try JSON authentication
+      try {
+        const jsonUser = jsonService.authenticateUser(email, password);
+        if (jsonUser) {
+          setUser({
+            uid: jsonUser.id.toString(),
+            email: jsonUser.email,
+            displayName: jsonUser.name,
+            photoURL: jsonUser.avatar,
+            role: jsonUser.role as 'user' | 'admin',
+            status: 'active',
+            createdAt: jsonUser.createdAt
+          });
+          return;
+        }
+      } catch (jsonError) {
+        console.log('JSON authentication failed, trying Firebase:', jsonError);
+      }
+      
+      // If JSON auth fails, try Firebase
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error('Authentication error:', error);
+      throw error instanceof Error ? error : new Error('Authentication failed');
+    }
   };
 
   const logout = async () => {

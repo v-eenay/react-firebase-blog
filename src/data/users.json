@@ -1,3 +1,34 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "email": "admin@example.com",
+      "role": "admin",
+      "name": "Admin User",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=admin",
+      "bio": "Site administrator and content curator",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 2,
+      "username": "john_doe",
+      "email": "john@example.com",
+      "role": "user",
+      "name": "John Doe",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
+      "bio": "Passionate writer and tech enthusiast",
+      "createdAt": "2024-01-15"
+    },
+    {
+      "id": 3,
+      "username": "jane_smith",
+      "email": "jane@example.com",
+      "role": "user",
+      "name": "Jane Smith",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=jane",
+      "bio": "Professional blogger and storyteller",
+      "createdAt": "2024-02-01"
+    }
+  ]
 }

@@ -3,20 +3,37 @@
     {
       "id": 1,
       "name": "General",
-      "description": "General blog posts",
-      "slug": "general"
+      "description": "General blog posts and announcements about our platform and community",
+      "slug": "general",
+      "icon": "📢"
     },
     {
       "id": 2,
       "name": "Technology",
-      "description": "Posts about technology and programming",
-      "slug": "technology"
+      "description": "Latest trends in web development, programming, and tech innovations",
+      "slug": "technology",
+      "icon": "💻"
     },
     {
       "id": 3,
       "name": "Lifestyle",
-      "description": "Posts about lifestyle and personal experiences",
-      "slug": "lifestyle"
+      "description": "Tips and insights for maintaining work-life balance and personal growth",
+      "slug": "lifestyle",
+      "icon": "🌱"
+    },
+    {
+      "id": 4,
+      "name": "Writing Tips",
+      "description": "Improve your writing skills with expert advice and practical techniques",
+      "slug": "writing-tips",
+      "icon": "✍️"
+    },
+    {
+      "id": 5,
+      "name": "Community",
+      "description": "Stories and updates from our growing community of writers and readers",
+      "slug": "community",
+      "icon": "👥"
     }
   ]
 }

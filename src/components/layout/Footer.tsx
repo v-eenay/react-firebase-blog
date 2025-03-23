@@ -35,6 +35,11 @@ export default function Footer() {
                       Categories
                     </Link>
                   </li>
+                  <li>
+                    <Link to="/terms" className="text-base text-gray-500 hover:text-gray-900">
+                      Terms of Service
+                    </Link>
+                  </li>
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">

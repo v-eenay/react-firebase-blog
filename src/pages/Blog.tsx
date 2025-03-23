@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db } from '../firebase/config';
 import { useAuth } from '../contexts/AuthContext';
+import { jsonService } from '../services/jsonService';
 
 interface Post {
   id: string;
@@ -32,35 +31,35 @@ export default function Blog() {
   const { user } = useAuth();
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchData = () => {
       try {
-        const postsQuery = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
-        const postsSnapshot = await getDocs(postsQuery);
-        const postsData = postsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Post[];
+        const jsonPosts = jsonService.getAllPosts();
+        const postsData = jsonPosts.map(post => ({
+          id: post.id.toString(),
+          title: post.title,
+          content: post.content,
+          authorId: post.authorId.toString(),
+          authorName: jsonService.getUserById(post.authorId)?.name || 'Unknown Author',
+          categoryId: post.categoryId,
+          image: post.imageUrl,
+          createdAt: post.createdAt,
+          updatedAt: post.updatedAt
+        }));
         setPosts(postsData);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
 
-    const fetchCategories = async () => {
-      try {
-        const categoriesSnapshot = await getDocs(collection(db, 'categories'));
-        const categoriesData = categoriesSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Category[];
+        const jsonCategories = jsonService.getAllCategories();
+        const categoriesData = jsonCategories.map(category => ({
+          id: category.id,
+          name: category.name,
+          slug: category.slug
+        }));
         setCategories(categoriesData);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchPosts();
-    fetchCategories();
+    fetchData();
   }, []);
 
   const filteredPosts = posts.filter(post => {

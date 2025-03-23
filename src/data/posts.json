@@ -1,11 +1,37 @@
 {
-  "posts": [{
-    "id": 1,
-    "title": "Welcome to My Blog",
-    "content": "This is my first blog post using React!",
-    "authorId": null,
-    "categoryId": 1,
-    "createdAt": "2024-02-15",
-    "updatedAt": "2024-02-15"
-  }]
+  "posts": [
+    {
+      "id": 1,
+      "title": "Welcome to The Daily Blog",
+      "content": "Welcome to our retro-styled blogging platform! Here, we blend modern technology with classic aesthetics to create a unique writing experience. Whether you're a seasoned writer or just starting your blogging journey, our platform provides the perfect space to share your thoughts, stories, and insights with the world.",
+      "authorId": 1,
+      "categoryId": 1,
+      "createdAt": "2024-02-15",
+      "updatedAt": "2024-02-15",
+      "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=welcome",
+      "tags": ["welcome", "introduction", "blogging"]
+    },
+    {
+      "id": 2,
+      "title": "The Future of Web Development",
+      "content": "React continues to evolve with exciting new features. In this post, we explore the latest trends in web development, including server components, streaming SSR, and the future of state management. Learn how these advancements are shaping the way we build modern web applications.",
+      "authorId": 2,
+      "categoryId": 2,
+      "createdAt": "2024-02-16",
+      "updatedAt": "2024-02-16",
+      "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=tech",
+      "tags": ["technology", "web development", "react"]
+    },
+    {
+      "id": 3,
+      "title": "Finding Balance in a Digital World",
+      "content": "In today's fast-paced digital age, maintaining a healthy work-life balance can be challenging. This article shares practical tips and insights on how to stay productive while taking care of your mental and physical well-being. Discover strategies for digital detox and mindful technology use.",
+      "authorId": 3,
+      "categoryId": 3,
+      "createdAt": "2024-02-17",
+      "updatedAt": "2024-02-17",
+      "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=lifestyle",
+      "tags": ["lifestyle", "wellness", "productivity"]
+    }
+  ]
 }
