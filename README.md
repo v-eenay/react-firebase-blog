@@ -1,54 +1,105 @@
-# React + TypeScript + Vite
+# React Blog Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern blog platform built with React, Tailwind CSS, and Firebase featuring retro newspaper aesthetics.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📰 Retro-styled article layouts with newspaper-inspired typography
+- 🔐 User authentication system with email/password
+- 📝 Rich text blog post creation and editing
+- 🔍 Search functionality with category filtering
+- 💬 Comment system with real-time updates
+- 📈 Post analytics (views, likes)
+- 📱 Responsive design for all screen sizes
 
-## Expanding the ESLint configuration
+## Technologies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- ⚛️ React 18 + TypeScript
+- 🔥 Firebase Authentication & Firestore
+- 🎨 Tailwind CSS with custom retro theme
+- 🌀 Framer Motion animations
+- 📦 Vite build tool
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/v-eenay/react-firebase-blog.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+cd react-firebase-blog
+npm install
 ```
+
+3. Create Firebase configuration:
+
+```bash
+# Create .env file in root directory
+VITE_FIREBASE_API_KEY=your-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
+```
+
+4. Start development server:
+
+```bash
+npm run dev
+```
+
+## Firebase Setup
+
+1. Create new Firebase project at [console.firebase.google.com](https://console.firebase.google.com/)
+2. Enable Authentication (Email/Password method)
+3. Create Firestore Database in test mode
+4. Create 'posts' and 'categories' collections
+5. Add web app and copy configuration to .env file
+
+## Available Scripts
+
+```json
+"scripts": {
+  "dev": "vite",
+  "build": "tsc && vite build",
+  "preview": "vite preview",
+  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+}
+```
+
+## Project Structure
+
+```
+/src
+├── components/    # Reusable UI components
+├── contexts/      # Auth context provider
+├── firebase/      # Firebase configuration
+├── pages/         # Route components
+├── styles/        # Custom CSS styles
+└── types/         # TypeScript interfaces
+```
+
+## Contributing
+
+1. Fork the project
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+## Contact
+
+**Vinay Koirala**
+Lecturer - Itahari International College
+📧 Professional: binaya.koirala@iic.edu.np
+📧 Personal: koiralavinay@gmail.com
+🐱 GitHub: https://github.com/v-eenay/react-firebase-blog.git
+
+---
+
+🛠️ Built with passion for retro design and modern web technologies

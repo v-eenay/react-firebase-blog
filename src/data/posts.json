@@ -1,0 +1,11 @@
+{
+  "posts": [{
+    "id": 1,
+    "title": "Welcome to My Blog",
+    "content": "This is my first blog post using React!",
+    "authorId": null,
+    "categoryId": 1,
+    "createdAt": "2024-02-15",
+    "updatedAt": "2024-02-15"
+  }]
+}
