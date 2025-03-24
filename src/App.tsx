@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
+import { GamificationProvider } from './contexts/GamificationContext';
 import NotificationBell from './components/NotificationBell';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
@@ -45,7 +46,8 @@ export default function App() {
   return (
     <AuthProvider>
       <NotificationProvider>
-        <Router>
+        <GamificationProvider>
+          <Router>
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -88,7 +90,8 @@ export default function App() {
               />
             </Routes>
           </Layout>
-        </Router>
+          </Router>
+        </GamificationProvider>
       </NotificationProvider>
     </AuthProvider>
   );

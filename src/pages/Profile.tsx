@@ -5,6 +5,7 @@ import { db } from '../firebase/config';
 import { useAuth } from '../contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import GamificationProfile from '../components/GamificationProfile';
 
 interface UserProfile {
   uid: string;
@@ -111,6 +112,7 @@ export default function Profile() {
 
   return (
     <div className="py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* User Profile */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -184,6 +186,9 @@ export default function Profile() {
           </div>
         </div>
       </motion.div>
+
+      {/* Gamification Profile */}
+      {profile.uid === user?.uid && <GamificationProfile />}
 
       <h2 className="text-2xl font-bold font-serif mb-6">Published Posts</h2>
       <div className="grid gap-6 md:grid-cols-2">

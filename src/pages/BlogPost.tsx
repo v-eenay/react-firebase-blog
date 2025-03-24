@@ -4,6 +4,7 @@ import { doc, getDoc, collection, query, where, orderBy, onSnapshot, addDoc, run
 import { db } from '../firebase/config';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
+import { useGamification } from '../contexts/GamificationContext';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -80,12 +81,13 @@ export default function BlogPost() {
   }, [post?.categoryId, id]);
 
   const { addNotification } = useNotifications();
+  const { addPoints, updateChallengeProgress } = useGamification();
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim() || !user || !id) return;
 
-    await addDoc(collection(db, 'posts', id, 'comments'), {
+    const commentRef = await addDoc(collection(db, 'posts', id, 'comments'), {
       text: newComment,
       userId: user.uid,
       userEmail: user.email,
@@ -103,6 +105,10 @@ export default function BlogPost() {
     }
 
     setNewComment('');
+    
+    // Add points and update challenges for commenting
+    await addPoints(POINTS_CONFIG.comment);
+    await updateChallengeProgress('comment');
   };
 
   const handleLike = async () => {
@@ -119,6 +125,10 @@ export default function BlogPost() {
           createdAt: new Date().toISOString()
         });
         transaction.update(postRef, { likes: increment(1) });
+        
+        // Add points and update challenges for liking
+        await addPoints(POINTS_CONFIG.like);
+        await updateChallengeProgress('like');
 
         // Notify the post author about the new like
         if (post.authorId !== user.uid) {

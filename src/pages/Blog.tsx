@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
+import { useGamification } from '../contexts/GamificationContext';
 import { jsonService } from '../services/jsonService';
 import SearchBar, { SearchFilters } from '../components/SearchBar';
 
@@ -35,8 +36,14 @@ export default function Blog() {
   });
 
   const { user } = useAuth();
+  const { addPoints, updateChallengeProgress } = useGamification();
 
   useEffect(() => {
+    // Add points and update challenges for creating a post
+    if (user) {
+      addPoints(POINTS_CONFIG.post);
+      updateChallengeProgress('post');
+    }
     const fetchData = () => {
       try {
         const jsonPosts = jsonService.getAllPosts();
