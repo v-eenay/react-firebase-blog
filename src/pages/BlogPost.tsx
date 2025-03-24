@@ -5,10 +5,12 @@ import { db } from '../firebase/config';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import { useGamification } from '../contexts/GamificationContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { useCollaboration } from '../contexts/CollaborationContext';
 import CollaborationSidebar from '../components/CollaborationSidebar';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 interface Post {
   id: string;
@@ -49,6 +51,9 @@ export default function BlogPost() {
   const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
   const [showCollaboration, setShowCollaboration] = useState(false);
   const [collaboratorEmail, setCollaboratorEmail] = useState('');
+  const [translatedTitle, setTranslatedTitle] = useState<string>('');
+  const [translatedContent, setTranslatedContent] = useState<string>('');
+  const { currentLanguage, translate, isTranslating } = useLanguage();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -167,12 +172,15 @@ export default function BlogPost() {
           />
         )}
 
+        <div className="flex justify-end mb-4">
+          <LanguageSwitcher />
+        </div>
         <motion.article
           initial={{ y: 20 }}
           animate={{ y: 0 }}
           className="prose lg:prose-xl mx-auto mb-16"
         >
-          <h1 className="text-4xl font-bold font-serif mb-6">{post.title}</h1>
+          <h1 className="text-4xl font-bold font-serif mb-6">{translatedTitle || post.title}</h1>
           <div className="flex items-center gap-4 mb-8">
             <div className="bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-full">
               {post.authorName}
@@ -215,7 +223,13 @@ export default function BlogPost() {
               )}
             </div>
           </div>
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          {isTranslating ? (
+            <div className="flex items-center justify-center py-4">
+              <span className="text-[var(--color-accent)]">Translating...</span>
+            </div>
+          ) : (
+            <div dangerouslySetInnerHTML={{ __html: translatedContent || post.content }} />
+          )}
         </motion.article>
 
         <div className="flex gap-4 mb-12 justify-center">

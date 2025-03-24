@@ -1,6 +1,40 @@
 import { motion } from 'framer-motion';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useEffect, useState } from 'react';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function TermsOfService() {
+  const { currentLanguage, translate, isTranslating } = useLanguage();
+  const [translatedContent, setTranslatedContent] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    const translateContent = async () => {
+      if (currentLanguage !== 'en') {
+        const sections = [
+          { key: 'title', text: 'Terms of Service' },
+          { key: 'acceptance', text: 'By accessing and using Retro Blog, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. These terms constitute a legally binding agreement between you and Retro Blog regarding your use of our services.' },
+          { key: 'accounts', text: 'To access certain features of Retro Blog, you must create an account. You agree to provide accurate and complete registration information, maintain the security of your account credentials, promptly notify us of any unauthorized use of your account, and accept responsibility for all activities that occur under your account.' },
+          { key: 'content', text: 'As a Retro Blog user, you retain ownership of the content you post. However, by submitting content, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, and distribute your content.' },
+          { key: 'intellectual', text: 'The Retro Blog platform, including its original content, features, and functionality, is owned by us and protected by international copyright, trademark, and other intellectual property laws.' },
+          { key: 'privacy', text: 'We take your privacy seriously. Our Privacy Policy, which is incorporated into these Terms of Service, explains how we collect, use, and protect your personal information. By using Retro Blog, you consent to our data practices as described in the Privacy Policy.' },
+          { key: 'modifications', text: 'We reserve the right to modify, suspend, or discontinue any part of Retro Blog at any time.' },
+          { key: 'termination', text: 'We may terminate or suspend your access to Retro Blog immediately, without prior notice, for conduct that we believe violates these Terms of Service or is harmful to other users, our business, or third parties, or for any other reason at our sole discretion.' },
+          { key: 'liability', text: 'To the maximum extent permitted by law, Retro Blog and its affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly.' },
+          { key: 'governing', text: 'These Terms of Service shall be governed by and construed in accordance with the laws of the jurisdiction in which we operate, without regard to its conflict of law provisions.' }
+        ];
+
+        const translations = {};
+        for (const section of sections) {
+          translations[section.key] = await translate(section.text, currentLanguage);
+        }
+        setTranslatedContent(translations);
+      } else {
+        setTranslatedContent({});
+      }
+    };
+
+    translateContent();
+  }, [currentLanguage, translate]);
   return (
     <div className="min-h-[80vh] py-12 px-4 sm:px-6 lg:px-8 bg-[var(--color-paper)]">
       <motion.div
@@ -9,15 +43,26 @@ export default function TermsOfService() {
         transition={{ duration: 0.5 }}
         className="max-w-4xl mx-auto space-y-8 p-8 vintage-paper rounded-lg shadow-[8px_8px_0_var(--color-ink)] relative overflow-hidden"
       >
+        <div className="flex justify-end mb-4">
+          <LanguageSwitcher />
+        </div>
         <h1 className="text-4xl font-bold font-serif text-[var(--color-ink)] text-center">
-          Terms of Service
+          {isTranslating ? (
+            <span className="text-[var(--color-accent)]">Translating...</span>
+          ) : (
+            translatedContent['title'] || 'Terms of Service'
+          )}
         </h1>
         
         <div className="space-y-8 font-serif text-[var(--color-ink)]">
           <section className="space-y-4">
             <h2 className="text-2xl font-bold">1. Acceptance of Terms</h2>
             <p>
-              By accessing and using Retro Blog, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. These terms constitute a legally binding agreement between you and Retro Blog regarding your use of our services.
+              {isTranslating ? (
+                <span className="text-[var(--color-accent)]">Translating...</span>
+              ) : (
+                translatedContent['acceptance'] || 'By accessing and using Retro Blog, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. These terms constitute a legally binding agreement between you and Retro Blog regarding your use of our services.'
+              )}
             </p>
           </section>
 
