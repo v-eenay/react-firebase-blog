@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { NotificationProvider } from './contexts/NotificationContext';
+import NotificationBell from './components/NotificationBell';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
@@ -42,50 +44,52 @@ function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps)
 export default function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route
-              path="/blog/:id"
-              element={
-                <ProtectedRoute>
-                  <BlogPost />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-                <Route path="/about" element={<About />} />
-            <Route
-              path="/profile/:id?"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute requireAdmin={true}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <UserDashboard />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </Layout>
-      </Router>
+      <NotificationProvider>
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route
+                path="/blog/:id"
+                element={
+                  <ProtectedRoute>
+                    <BlogPost />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/categories" element={<Categories />} />
+              <Route path="/login" element={<Login />} /> 
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/about" element={<About />} />
+              <Route
+                path="/profile/:id?"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute requireAdmin={true}>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <UserDashboard />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Layout>
+        </Router>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

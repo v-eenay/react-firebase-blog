@@ -1,7 +1,8 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import NotificationBell from '../NotificationBell';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -20,12 +21,11 @@ const userLinks = [
   { name: 'Profile', href: '/profile' }
 ];
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Header() {
-  const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
   
@@ -61,18 +61,21 @@ export default function Header() {
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
                   {user ? (
-                    <div className="flex items-center space-x-4">
-                      {(user.role === 'admin' ? adminNavigation : userLinks).map((item) => (
-                        <Link
-                          key={item.name}
-                          to={item.href}
-                          className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)]"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                      <button onClick={() => logout()} className="btn-retro">Logout</button>
-                    </div>
+                    <>
+                      <NotificationBell />
+                      <div className="flex items-center space-x-4">
+                        {(user.role === 'admin' ? adminNavigation : userLinks).map((item) => (
+                          <Link
+                            key={item.name}
+                            to={item.href}
+                            className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)]"
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                        <button onClick={() => logout()} className="btn-retro">Logout</button>
+                      </div>
+                    </>
                   ) : (
                     <>
                       <Link to="/login" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">Login</Link>

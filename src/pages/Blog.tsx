@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { jsonService } from '../services/jsonService';
+import SearchBar, { SearchFilters } from '../components/SearchBar';
 
 interface Post {
   id: string;
@@ -26,7 +27,12 @@ export default function Blog() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
+    query: '',
+    dateRange: 'all',
+    sortBy: 'newest',
+    tags: []
+  });
 
   const { user } = useAuth();
 
@@ -64,8 +70,8 @@ export default function Blog() {
 
   const filteredPosts = posts.filter(post => {
     const matchesCategory = selectedCategory === 'all' || post.categoryId === parseInt(selectedCategory);
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.content.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = post.title.toLowerCase().includes(searchFilters.query.toLowerCase()) ||
+      post.content.toLowerCase().includes(searchFilters.query.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -93,12 +99,10 @@ export default function Blog() {
 
         <div className="mb-8 flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Search posts..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="input-retro"
+            <SearchBar
+              onSearch={setSearchFilters}
+              className="w-full"
+              showAdvanced={true}
             />
           </div>
           <div className="sm:w-48">

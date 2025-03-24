@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc, collection, query, where, orderBy, onSnapshot, addDoc, runTransaction } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, orderBy, onSnapshot, addDoc, runTransaction, increment } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotifications } from '../contexts/NotificationContext';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -78,6 +79,8 @@ export default function BlogPost() {
     fetchRelatedPosts();
   }, [post?.categoryId, id]);
 
+  const { addNotification } = useNotifications();
+
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim() || !user || !id) return;
@@ -88,16 +91,48 @@ export default function BlogPost() {
       userEmail: user.email,
       createdAt: new Date().toISOString()
     });
+
+    // Notify the post author about the new comment
+    if (post?.authorId !== user.uid) {
+      await addNotification({
+        type: 'comment',
+        message: `${user.email} commented on your post: ${post.title}`,
+        targetId: id,
+        sourceUserId: user.uid
+      });
+    }
+
     setNewComment('');
   };
 
   const handleLike = async () => {
-    if (!id || !post) return;
+    if (!id || !post || !user) return;
     const postRef = doc(db, 'posts', id);
+    const likeRef = doc(db, 'posts', id, 'likes', user.uid);
+
     await runTransaction(db, async (transaction) => {
-      const postDoc = await transaction.get(postRef);
-      const newLikes = (postDoc.data()?.likes || 0) + 1;
-      transaction.update(postRef, { likes: newLikes });
+      const likeDoc = await transaction.get(likeRef);
+
+      if (!likeDoc.exists()) {
+        transaction.set(likeRef, { 
+          userId: user.uid,
+          createdAt: new Date().toISOString()
+        });
+        transaction.update(postRef, { likes: increment(1) });
+
+        // Notify the post author about the new like
+        if (post.authorId !== user.uid) {
+          await addNotification({
+            type: 'like',
+            message: `${user.email} liked your post: ${post.title}`,
+            targetId: id,
+            sourceUserId: user.uid
+          });
+        }
+      } else {
+        transaction.delete(likeRef);
+        transaction.update(postRef, { likes: increment(-1) });
+      }
     });
   };
 
