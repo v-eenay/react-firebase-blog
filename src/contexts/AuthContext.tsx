@@ -24,6 +24,9 @@ interface User {
   status?: 'active' | 'banned';
   createdAt?: string;
   updatedAt?: string;
+  followers?: string[];
+  following?: string[];
+  pinnedPosts?: string[];
 }
 
 interface AuthContextType {

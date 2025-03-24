@@ -22,6 +22,13 @@ interface Post {
   updatedAt: string;
   likes?: number;
   collaborators?: string[];
+  reactions?: {
+    [key: string]: {
+      type: 'thumbsUp' | 'heart' | 'laugh';
+      userId: string;
+      createdAt: string;
+    };
+  };
 }
 
 interface Comment {
@@ -117,41 +124,7 @@ export default function BlogPost() {
     await updateChallengeProgress('comment');
   };
 
-  const handleLike = async () => {
-    if (!id || !post || !user) return;
-    const postRef = doc(db, 'posts', id);
-    const likeRef = doc(db, 'posts', id, 'likes', user.uid);
-
-    await runTransaction(db, async (transaction) => {
-      const likeDoc = await transaction.get(likeRef);
-
-      if (!likeDoc.exists()) {
-        transaction.set(likeRef, { 
-          userId: user.uid,
-          createdAt: new Date().toISOString()
-        });
-        transaction.update(postRef, { likes: increment(1) });
-        
-        // Add points and update challenges for liking
-        await addPoints(POINTS_CONFIG.like);
-        await updateChallengeProgress('like');
-
-        // Notify the post author about the new like
-        if (post.authorId !== user.uid) {
-          await addNotification({
-            type: 'like',
-            message: `${user.email} liked your post: ${post.title}`,
-            targetId: id,
-            sourceUserId: user.uid
-          });
-        }
-      } else {
-        transaction.delete(likeRef);
-        transaction.update(postRef, { likes: increment(-1) });
-      }
-    });
-  };
-
+  // Removed handleLike as it's replaced by ReactionButtons component
   if (!post) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   const handleShare = async () => {
