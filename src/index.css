@@ -1,14 +1,39 @@
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-gray-50 text-gray-900;
-    font-family: system-ui, -apple-system, sans-serif;
+/* Import custom base styles */
+@import './styles/retro.css';
+@import './styles/dark-theme.css';
+
+@tailwind components;
+
+/* Custom components layer */
+@layer components {
+  .btn-retro {
+    @apply bg-paper border-2 border-ink px-4 py-2 font-bold shadow-md transition-all duration-200;
   }
 
-  a {
-    @apply text-blue-600 hover:text-blue-800;
+  .article-card {
+    @apply bg-paper border border-accent p-8 mb-8 relative shadow-sm;
+  }
+
+  .vintage-paper {
+    @apply relative bg-paper border-2 border-ink;
+  }
+
+  .retro-container {
+    @apply max-w-7xl mx-auto p-8 bg-paper shadow-lg;
+  }
+}
+
+@tailwind utilities;
+
+/* Custom utilities layer */
+@layer utilities {
+  .newspaper-title {
+    @apply text-5xl text-center border-b-2 border-ink pb-4 mb-8 font-serif uppercase tracking-widest;
+  }
+
+  .article-meta {
+    @apply font-body italic text-accent text-sm mb-4;
   }
 }

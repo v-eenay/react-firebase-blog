@@ -2,6 +2,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { GamificationProvider } from './contexts/GamificationContext';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { CollaborationProvider } from './contexts/CollaborationContext';
+import { ModerationProvider } from './contexts/ModerationContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import './styles/dark-theme.css';
 import NotificationBell from './components/NotificationBell';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
@@ -46,9 +51,13 @@ export default function App() {
   return (
     <AuthProvider>
       <NotificationProvider>
-        <GamificationProvider>
-          <Router>
-          <Layout>
+        <CollaborationProvider>
+          <GamificationProvider>
+            <LanguageProvider>
+              <ModerationProvider>
+          <ThemeProvider>
+            <Router>
+            <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/blog" element={<Blog />} />
@@ -89,9 +98,13 @@ export default function App() {
                 }
               />
             </Routes>
-          </Layout>
-          </Router>
-        </GamificationProvider>
+            </Layout>
+            </Router>
+          </ThemeProvider>
+        </ModerationProvider>
+            </LanguageProvider>
+          </GamificationProvider>
+        </CollaborationProvider>
       </NotificationProvider>
     </AuthProvider>
   );

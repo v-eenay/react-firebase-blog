@@ -89,7 +89,13 @@ export default function TermsOfService() {
               <li>Infringes upon the rights of others</li>
               <li>Is harmful, fraudulent, or deceptive</li>
               <li>Contains malware or harmful code</li>
+              <li>Is considered spam or excessive self-promotion</li>
+              <li>Contains hate speech or discriminatory content</li>
+              <li>Includes excessive use of capital letters or repetitive characters</li>
             </ul>
+            <p className="mt-4">
+              We employ automated content moderation systems to detect and prevent spam, inappropriate content, and violations of our content policies. Users can report any content they believe violates these terms using the reporting feature. Reported content will be reviewed by our moderation team, and appropriate action will be taken, which may include content removal and account suspension.
+            </p>
           </section>
 
           <section className="space-y-4">

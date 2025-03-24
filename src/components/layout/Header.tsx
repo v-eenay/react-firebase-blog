@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NotificationBell from '../NotificationBell';
+import ThemeToggle from '../ThemeToggle';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -60,6 +61,7 @@ export default function Header() {
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                      <ThemeToggle />
                   {user ? (
                     <>
                       <NotificationBell />

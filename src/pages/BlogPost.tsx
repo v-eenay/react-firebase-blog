@@ -270,14 +270,30 @@ export default function BlogPost() {
           )}
           <div className="space-y-6">
             {comments.map((comment) => (
-              <div key={comment.id} className="border-2 border-[var(--color-ink)] p-4">
-                <div className="flex items-center gap-3 mb-2">
+              <div key={comment.id} className="border-2 border-[var(--color-ink)] p-4 relative">
+                <div className="flex justify-between items-center mb-2">
                   <span className="font-bold">{comment.userEmail}</span>
-                  <span className="text-sm text-gray-500">
-                    {new Date(comment.createdAt).toLocaleDateString()}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-500">
+                      {new Date(comment.createdAt).toLocaleDateString()}
+                    </span>
+                    {user && user.uid !== comment.userId && (
+                      <button
+                        onClick={() => reportContent('comment', comment.id, 'inappropriate content')}
+                        className="text-[var(--color-accent)] hover:text-[var(--color-ink)] text-sm"
+                        title="Report comment"
+                      >
+                        ⚠️ Report
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <p className="text-gray-800">{comment.text}</p>
+                {isContentFlagged(comment.id) && (
+                  <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-xs rounded-bl">
+                    Flagged
+                  </div>
+                )}
               </div>
             ))}
           </div>

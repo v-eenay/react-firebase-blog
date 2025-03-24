@@ -1,0 +1,110 @@
+:root[data-theme="dark"] {
+  --color-paper: #121212;
+  --color-paper-light: #1e1e1e;
+  --color-ink: #ffffff;
+  --color-accent: #a8a8a8;
+  --color-accent-light: #2a2a2a;
+  --color-success: #4caf50;
+  --color-error: #f44336;
+  --color-warning: #ff9800;
+  --color-info: #2196f3;
+  --shadow-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Dark mode specific overrides */
+[data-theme="dark"] .vintage-paper {
+  background-color: var(--color-paper-light);
+  border: 1px solid var(--color-accent);
+}
+
+[data-theme="dark"] body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .article-card {
+  background-color: var(--color-paper-light);
+  border: 1px solid var(--color-accent);
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .article-card:hover {
+  border-color: var(--color-ink);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .btn-retro {
+  background-color: var(--color-paper-light);
+  color: var(--color-ink);
+  border: 1px solid var(--color-accent);
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .btn-retro:hover {
+  background-color: var(--color-accent-light);
+  border-color: var(--color-ink);
+}
+
+[data-theme="dark"] .input-retro {
+  background-color: var(--color-paper-light);
+  border: 1px solid var(--color-accent);
+  color: var(--color-ink);
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+[data-theme="dark"] .retro-footer {
+  background-color: var(--color-paper-light);
+  border-top: 3px double var(--color-accent);
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .retro-footer a {
+  color: var(--color-accent);
+  transition: color 0.2s ease;
+}
+
+[data-theme="dark"] .retro-footer a:hover {
+  color: var(--color-ink);
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .input-retro:focus {
+  border-color: var(--color-ink);
+  outline: none;
+}
+
+[data-theme="dark"] .prose {
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .prose h1,
+[data-theme="dark"] .prose h2,
+[data-theme="dark"] .prose h3,
+[data-theme="dark"] .prose h4,
+[data-theme="dark"] .prose h5,
+[data-theme="dark"] .prose h6 {
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .prose a {
+  color: var(--color-accent);
+}
+
+[data-theme="dark"] .prose strong {
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .prose code {
+  background-color: var(--color-accent-light);
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .prose blockquote {
+  border-color: var(--color-accent);
+  color: var(--color-ink);
+}
