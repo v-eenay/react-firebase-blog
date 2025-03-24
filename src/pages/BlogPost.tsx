@@ -5,6 +5,8 @@ import { db } from '../firebase/config';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import { useGamification } from '../contexts/GamificationContext';
+import { useCollaboration } from '../contexts/CollaborationContext';
+import CollaborationSidebar from '../components/CollaborationSidebar';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -19,6 +21,7 @@ interface Post {
   createdAt: string;
   updatedAt: string;
   likes?: number;
+  collaborators?: string[];
 }
 
 interface Comment {
@@ -32,10 +35,13 @@ interface Comment {
 export default function BlogPost() {
   const { id } = useParams();
   const { user } = useAuth();
+  const { shareDocument, unshareDocument, isCollaborating, documentContent, updateContent } = useCollaboration();
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
+  const [showCollaboration, setShowCollaboration] = useState(false);
+  const [collaboratorEmail, setCollaboratorEmail] = useState('');
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -148,8 +154,35 @@ export default function BlogPost() {
 
   if (!post) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
+  const handleShare = async () => {
+    if (!id || !collaboratorEmail.trim()) return;
+    
+    // Get user by email
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', collaboratorEmail.trim()));
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+      const collaboratorId = querySnapshot.docs[0].id;
+      await shareDocument(id, collaboratorId);
+      setCollaboratorEmail('');
+      addNotification({
+        type: 'share',
+        message: `${user?.email} shared a post with you: ${post?.title}`,
+        targetId: id,
+        sourceUserId: user?.uid
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isCollaborating && documentContent && id) {
+      updateContent(id, documentContent);
+    }
+  }, [isCollaborating, documentContent, id]);
+
   return (
-    <div className="py-12">
+    <div className="py-12 relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {post.image && (
           <motion.img
@@ -174,12 +207,40 @@ export default function BlogPost() {
             <span className="text-gray-500">
               {new Date(post.createdAt).toLocaleDateString()}
             </span>
-            <button
-              onClick={handleLike}
-              className="flex items-center gap-2 text-[var(--color-accent)] hover:text-[var(--color-ink)]"
-            >
-              ♥ {post.likes || 0}
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handleLike}
+                className="flex items-center gap-2 text-[var(--color-accent)] hover:text-[var(--color-ink)]"
+              >
+                ♥ {post.likes || 0}
+              </button>
+              {post.authorId === user?.uid && (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="email"
+                    value={collaboratorEmail}
+                    onChange={(e) => setCollaboratorEmail(e.target.value)}
+                    placeholder="Collaborator's email"
+                    className="input-retro text-sm"
+                  />
+                  <button
+                    onClick={handleShare}
+                    disabled={!collaboratorEmail.trim()}
+                    className="btn-retro px-4 py-2 text-sm"
+                  >
+                    Share
+                  </button>
+                </div>
+              )}
+              {post.collaborators?.includes(user?.uid) && (
+                <button
+                  onClick={() => setShowCollaboration(!showCollaboration)}
+                  className="btn-retro px-4 py-2 text-sm"
+                >
+                  {showCollaboration ? 'Hide Chat' : 'Show Chat'}
+                </button>
+              )}
+            </div>
           </div>
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
         </motion.article>
@@ -260,6 +321,13 @@ export default function BlogPost() {
           </div>
         </div>
       </div>
+      {showCollaboration && id && (
+        <CollaborationSidebar
+          postId={id}
+          isOpen={showCollaboration}
+          onClose={() => setShowCollaboration(false)}
+        />
+      )}
     </div>
   );
 }
