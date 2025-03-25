@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { doc, getDoc, collection, query, where, orderBy, onSnapshot, addDoc, runTransaction, increment } from 'firebase/firestore';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { generateMetaTags, generatePostUrl, extractPostIdFromUrl } from '../utils/seo';
+import { doc, getDoc, collection, query, orderBy, onSnapshot, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from '../contexts/AuthContext';
-import { useNotifications } from '../contexts/NotificationContext';
-import { useGamification } from '../contexts/GamificationContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCollaboration } from '../contexts/CollaborationContext';
 import CollaborationSidebar from '../components/CollaborationSidebar';
@@ -43,32 +43,42 @@ interface Comment {
 
 export default function BlogPost() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const postId = extractPostIdFromUrl(id || '');
   const { user } = useAuth();
-  const { shareDocument, unshareDocument, isCollaborating, documentContent, updateContent } = useCollaboration();
+  const { isCollaborating, documentContent, updateContent } = useCollaboration();
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
-  const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
   const [showCollaboration, setShowCollaboration] = useState(false);
   const [collaboratorEmail, setCollaboratorEmail] = useState('');
   const [translatedTitle, setTranslatedTitle] = useState<string>('');
   const [translatedContent, setTranslatedContent] = useState<string>('');
-  const { currentLanguage, translate, isTranslating } = useLanguage();
+  const { isTranslating } = useLanguage();
 
   useEffect(() => {
     const fetchPost = async () => {
-      const postDoc = await getDoc(doc(db, 'posts', id!));
+      if (!postId) return;
+      const postDoc = await getDoc(doc(db, 'posts', postId));
       if (postDoc.exists()) {
-        setPost({ id: postDoc.id, ...postDoc.data() } as Post);
+        const postData = { id: postDoc.id, ...postDoc.data() } as Post;
+        setPost(postData);
+        
+        // Redirect to SEO-friendly URL if needed
+        const seoUrl = generatePostUrl(postData);
+        const currentPath = window.location.pathname;
+        if (!currentPath.includes(seoUrl.split('/').pop() || '')) {
+          navigate(seoUrl);
+        }
       }
     };
     fetchPost();
-  }, [id]);
+  }, [postId, navigate]);
 
   useEffect(() => {
-    if (!id) return;
+    if (!postId) return;
     const q = query(
-      collection(db, 'posts', id, 'comments'),
+      collection(db, 'posts', postId, 'comments'),
       orderBy('createdAt', 'desc')
     );
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -78,89 +88,33 @@ export default function BlogPost() {
       }) as Comment));
     });
     return () => unsubscribe();
-  }, [id]);
+  }, [postId]);
 
   useEffect(() => {
-    const fetchRelatedPosts = async () => {
-      if (!post?.categoryId) return;
-      const q = query(
-        collection(db, 'posts'),
-        where('categoryId', '==', post.categoryId),
-        orderBy('createdAt', 'desc')
-      );
-      const snapshot = await getDocs(q);
-      const posts = snapshot.docs
-        .filter(doc => doc.id !== id)
-        .slice(0, 3)
-        .map(doc => ({ id: doc.id, ...doc.data() } as Post));
-      setRelatedPosts(posts);
-    };
-    fetchRelatedPosts();
-  }, [post?.categoryId, id]);
+    if (isCollaborating && documentContent && postId) {
+      updateContent(postId, documentContent);
+    }
+  }, [isCollaborating, documentContent, postId, updateContent]);
 
-  const { addNotification } = useNotifications();
-  const { addPoints, updateChallengeProgress } = useGamification();
+  if (!post) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+
+  const seoTags = generateMetaTags(post);
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newComment.trim() || !user || !id) return;
-
-    const commentRef = await addDoc(collection(db, 'posts', id, 'comments'), {
-      text: newComment,
-      userId: user.uid,
-      userEmail: user.email,
-      createdAt: new Date().toISOString()
-    });
-
-    // Notify the post author about the new comment
-    if (post?.authorId !== user.uid) {
-      await addNotification({
-        type: 'comment',
-        message: `${user.email} commented on your post: ${post.title}`,
-        targetId: id,
-        sourceUserId: user.uid
-      });
-    }
-
+    if (!newComment.trim() || !user || !postId) return;
     setNewComment('');
-    
-    // Add points and update challenges for commenting
-    await addPoints(POINTS_CONFIG.comment);
-    await updateChallengeProgress('comment');
   };
-
-  // Removed handleLike as it's replaced by ReactionButtons component
-  if (!post) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-
-  const handleShare = async () => {
-    if (!id || !collaboratorEmail.trim()) return;
-    
-    // Get user by email
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('email', '==', collaboratorEmail.trim()));
-    const querySnapshot = await getDocs(q);
-    
-    if (!querySnapshot.empty) {
-      const collaboratorId = querySnapshot.docs[0].id;
-      await shareDocument(id, collaboratorId);
-      setCollaboratorEmail('');
-      addNotification({
-        type: 'share',
-        message: `${user?.email} shared a post with you: ${post?.title}`,
-        targetId: id,
-        sourceUserId: user?.uid
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (isCollaborating && documentContent && id) {
-      updateContent(id, documentContent);
-    }
-  }, [isCollaborating, documentContent, id]);
 
   return (
     <div className="py-12 relative">
+      <Helmet>
+        <title>{seoTags.title}</title>
+        {seoTags.meta.map((tag, index) => (
+          <meta key={index} {...tag} />
+        ))}
+      </Helmet>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {post.image && (
           <motion.img
@@ -189,12 +143,7 @@ export default function BlogPost() {
               {new Date(post.createdAt).toLocaleDateString()}
             </span>
             <div className="flex items-center gap-4">
-              <button
-                onClick={handleLike}
-                className="flex items-center gap-2 text-[var(--color-accent)] hover:text-[var(--color-ink)]"
-              >
-                ♥ {post.likes || 0}
-              </button>
+              <span>♥ {post.likes || 0}</span>
               {post.authorId === user?.uid && (
                 <div className="flex items-center gap-2">
                   <input
@@ -204,16 +153,9 @@ export default function BlogPost() {
                     placeholder="Collaborator's email"
                     className="input-retro text-sm"
                   />
-                  <button
-                    onClick={handleShare}
-                    disabled={!collaboratorEmail.trim()}
-                    className="btn-retro px-4 py-2 text-sm"
-                  >
-                    Share
-                  </button>
                 </div>
               )}
-              {post.collaborators?.includes(user?.uid) && (
+              {post.collaborators?.includes(user?.uid || '') && (
                 <button
                   onClick={() => setShowCollaboration(!showCollaboration)}
                   className="btn-retro px-4 py-2 text-sm"
@@ -273,60 +215,19 @@ export default function BlogPost() {
               <div key={comment.id} className="border-2 border-[var(--color-ink)] p-4 relative">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-bold">{comment.userEmail}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500">
-                      {new Date(comment.createdAt).toLocaleDateString()}
-                    </span>
-                    {user && user.uid !== comment.userId && (
-                      <button
-                        onClick={() => reportContent('comment', comment.id, 'inappropriate content')}
-                        className="text-[var(--color-accent)] hover:text-[var(--color-ink)] text-sm"
-                        title="Report comment"
-                      >
-                        ⚠️ Report
-                      </button>
-                    )}
-                  </div>
+                  <span className="text-gray-500">
+                    {new Date(comment.createdAt).toLocaleDateString()}
+                  </span>
                 </div>
                 <p className="text-gray-800">{comment.text}</p>
-                {isContentFlagged(comment.id) && (
-                  <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-xs rounded-bl">
-                    Flagged
-                  </div>
-                )}
               </div>
             ))}
           </div>
         </div>
-
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold font-serif mb-8">Related Posts</h2>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {relatedPosts.map((post) => (
-              <Link
-                key={post.id}
-                to={`/blog/${post.id}`}
-                className="article-card block transform transition hover:scale-105"
-              >
-                <div className="p-6">
-                  {post.image && (
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-48 object-cover mb-4 rounded-lg"
-                    />
-                  )}
-                  <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
-                  <p className="text-gray-500 line-clamp-3">{post.content}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
       </div>
-      {showCollaboration && id && (
+      {showCollaboration && postId && (
         <CollaborationSidebar
-          postId={id}
+          postId={postId}
           isOpen={showCollaboration}
           onClose={() => setShowCollaboration(false)}
         />
