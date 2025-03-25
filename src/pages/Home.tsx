@@ -47,7 +47,9 @@ export default function Home() {
         const postsSnapshot = await getDocs(postsQuery);
         const postsData = postsSnapshot.docs.map(doc => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
+          updatedAt: doc.data().updatedAt?.toDate?.().toISOString() || new Date().toISOString()
         })) as Post[];
         setFeaturedPosts(postsData);
         setFilteredPosts(postsData);

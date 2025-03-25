@@ -23,9 +23,25 @@ export default function UserDashboard() {
   const [drafts, setDrafts] = useState<Post[]>([]);
 
   useEffect(() => {
-    // TODO: Implement Firebase listeners for posts and drafts
-    // This will be implemented after updating the Firebase configuration
-  }, []);
+    const fetchData = async () => {
+      if (!user) return;
+      try {
+        const postsRef = collection(db, 'posts');
+        const q = query(postsRef, where('authorId', '==', user.uid), orderBy('createdAt', 'desc'));
+        const postsSnapshot = await getDocs(q);
+        const postsData = postsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
+          updatedAt: doc.data().updatedAt?.toDate?.().toISOString() || new Date().toISOString()
+        }));
+        setPosts(postsData);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+    fetchData();
+  }, [user]);
 
   const handlePostAction = async (postId: string, action: 'edit' | 'delete' | 'publish') => {
     try {

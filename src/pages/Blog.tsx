@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import { useGamification, POINTS_CONFIG } from '../contexts/GamificationContext';
-import { jsonService } from '../services/jsonService';
+import { useGamification } from '../contexts/GamificationContext';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase/config';
 import SearchBar, { SearchFilters } from '../components/SearchBar';
 
 interface Post {
@@ -39,32 +40,24 @@ export default function Blog() {
   const { addPoints, updateChallengeProgress } = useGamification();
 
   useEffect(() => {
-    // Add points and update challenges for creating a post
-    if (user) {
-      addPoints(POINTS_CONFIG.post);
-      updateChallengeProgress('post');
-    }
-    const fetchData = () => {
+    const fetchData = async () => {
       try {
-        const jsonPosts = jsonService.getAllPosts();
-        const postsData = jsonPosts.map(post => ({
-          id: post.id.toString(),
-          title: post.title,
-          content: post.content,
-          authorId: post.authorId.toString(),
-          authorName: jsonService.getUserById(post.authorId)?.name || 'Unknown Author',
-          categoryId: post.categoryId,
-          image: post.imageUrl,
-          createdAt: post.createdAt,
-          updatedAt: post.updatedAt
+        const postsRef = collection(db, 'posts');
+        const postsSnapshot = await getDocs(postsRef);
+        const postsData = postsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
+          updatedAt: doc.data().updatedAt?.toDate?.().toISOString() || new Date().toISOString()
         }));
         setPosts(postsData);
 
-        const jsonCategories = jsonService.getAllCategories();
-        const categoriesData = jsonCategories.map(category => ({
-          id: category.id,
-          name: category.name,
-          slug: category.slug
+        const categoriesRef = collection(db, 'categories');
+        const categoriesSnapshot = await getDocs(categoriesRef);
+        const categoriesData = categoriesSnapshot.docs.map(doc => ({
+          id: parseInt(doc.id),
+          name: doc.data().name,
+          slug: doc.data().slug
         }));
         setCategories(categoriesData);
       } catch (error) {
@@ -161,7 +154,7 @@ export default function Blog() {
                       {categories.find(c => c.id === post.categoryId)?.name}
                     </span>
                     <Link
-                      to={`/blog/${post.id}`}
+                      to={`/blog/${post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${post.id}`}
                       className="text-indigo-600 hover:text-indigo-800 font-medium"
                     >
                       Read More

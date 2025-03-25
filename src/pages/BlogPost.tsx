@@ -44,7 +44,7 @@ interface Comment {
 export default function BlogPost() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const postId = extractPostIdFromUrl(id || '');
+  const postId = id?.split('-').pop() || '';
   const { user } = useAuth();
   const { isCollaborating, documentContent, updateContent } = useCollaboration();
   const [post, setPost] = useState<Post | null>(null);
