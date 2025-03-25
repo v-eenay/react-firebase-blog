@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 interface Post {
@@ -15,6 +16,7 @@ interface Post {
 }
 
 export default function UserDashboard() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'posts' | 'drafts' | 'analytics'>('posts');
   const [posts, setPosts] = useState<Post[]>([]);
@@ -69,7 +71,12 @@ export default function UserDashboard() {
           <div className="vintage-paper p-6 rounded-lg shadow-[8px_8px_0_var(--color-ink)]">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-serif font-bold">Published Posts</h2>
-              <button className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)]">New Post</button>
+              <button
+                onClick={() => navigate('/create-post')}
+                className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)]"
+              >
+                New Post
+              </button>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">

@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="bg-white">
+    <footer className="retro-footer">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
-            <Link to="/" className="text-xl font-bold text-gray-900">
+            <Link to="/" className="text-xl font-bold">
               Blog App
             </Link>
-            <p className="text-gray-500 text-sm">
+            <p className="text-sm">
               Share your thoughts and ideas with the world.
             </p>
           </div>
@@ -21,22 +21,22 @@ export default function Footer() {
                 </h3>
                 <ul className="mt-4 space-y-4">
                   <li>
-                    <Link to="/" className="text-base text-gray-500 hover:text-gray-900">
+                    <Link to="/" className="text-base hover:opacity-80">
                       Home
                     </Link>
                   </li>
                   <li>
-                    <Link to="/blog" className="text-base text-gray-500 hover:text-gray-900">
+                    <Link to="/blog" className="text-base hover:opacity-80">
                       Blog
                     </Link>
                   </li>
                   <li>
-                    <Link to="/categories" className="text-base text-gray-500 hover:text-gray-900">
+                    <Link to="/categories" className="text-base hover:opacity-80">
                       Categories
                     </Link>
                   </li>
                   <li>
-                    <Link to="/terms" className="text-base text-gray-500 hover:text-gray-900">
+                    <Link to="/terms" className="text-base hover:opacity-80">
                       Terms of Service
                     </Link>
                   </li>
@@ -48,12 +48,12 @@ export default function Footer() {
                 </h3>
                 <ul className="mt-4 space-y-4">
                   <li>
-                    <Link to="/login" className="text-base text-gray-500 hover:text-gray-900">
+                    <Link to="/login" className="text-base hover:opacity-80">
                       Login
                     </Link>
                   </li>
                   <li>
-                    <Link to="/signup" className="text-base text-gray-500 hover:text-gray-900">
+                    <Link to="/signup" className="text-base hover:opacity-80">
                       Sign Up
                     </Link>
                   </li>
@@ -62,8 +62,8 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-12 border-t border-gray-200 pt-8">
-          <p className="text-base text-gray-400 xl:text-center">
+        <div className="mt-12 border-t-2 border-[var(--color-ink)] pt-8">
+          <p className="text-base xl:text-center">
             &copy; {new Date().getFullYear()} Blog App. All rights reserved.
           </p>
         </div>

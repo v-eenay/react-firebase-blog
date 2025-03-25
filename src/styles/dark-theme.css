@@ -58,18 +58,19 @@
 }
 
 [data-theme="dark"] .retro-footer {
-  background-color: var(--color-paper-light);
+  background-color: var(--color-paper-dark);
   border-top: 3px double var(--color-accent);
-  color: var(--color-ink);
+  color: var(--color-paper-light);
 }
 
 [data-theme="dark"] .retro-footer a {
-  color: var(--color-accent);
+  color: var(--color-accent-light);
   transition: color 0.2s ease;
 }
 
 [data-theme="dark"] .retro-footer a:hover {
-  color: var(--color-ink);
+  color: var(--color-paper);
+  text-decoration: underline;
   transition: all 0.2s ease;
 }
 

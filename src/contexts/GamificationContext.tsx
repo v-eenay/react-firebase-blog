@@ -59,7 +59,7 @@ export const useGamification = () => {
   return context;
 };
 
-const POINTS_CONFIG = {
+export const POINTS_CONFIG = {
   post: 50,
   comment: 10,
   like: 5,
@@ -172,7 +172,8 @@ export const GamificationProvider = ({ children }: { children: ReactNode }) => {
       const querySnapshot = await getDocs(q);
       const leaderboardData = await Promise.all(
         querySnapshot.docs.map(async (doc) => {
-          const userData = await getDoc(doc(db, 'users', doc.id));
+          const userRef = doc(db, 'users', doc.id);
+          const userData = await getDoc(userRef);
           return {
             userId: doc.id,
             displayName: userData.data()?.displayName || 'Anonymous',

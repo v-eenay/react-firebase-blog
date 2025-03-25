@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import { useGamification } from '../contexts/GamificationContext';
+import { useGamification, POINTS_CONFIG } from '../contexts/GamificationContext';
 import { jsonService } from '../services/jsonService';
 import SearchBar, { SearchFilters } from '../components/SearchBar';
 

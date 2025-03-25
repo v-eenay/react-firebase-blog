@@ -6,6 +6,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { CollaborationProvider } from './contexts/CollaborationContext';
 import { ModerationProvider } from './contexts/ModerationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import CreatePost from './pages/CreatePost';
 import './styles/dark-theme.css';
 import NotificationBell from './components/NotificationBell';
 import Layout from './components/layout/Layout';
@@ -94,6 +95,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <UserDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/create-post"
+                element={
+                  <ProtectedRoute>
+                    <CreatePost />
                   </ProtectedRoute>
                 }
               />
