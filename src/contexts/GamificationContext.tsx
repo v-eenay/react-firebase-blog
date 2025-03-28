@@ -171,13 +171,13 @@ export const GamificationProvider = ({ children }: { children: ReactNode }) => {
       const q = query(collection(db, 'gamification'), orderBy('points', 'desc'), limit(10));
       const querySnapshot = await getDocs(q);
       const leaderboardData = await Promise.all(
-        querySnapshot.docs.map(async (doc) => {
-          const userRef = doc(db, 'users', doc.id);
+        querySnapshot.docs.map(async (docSnapshot) => {
+          const userRef = doc(db, 'users', docSnapshot.id);
           const userData = await getDoc(userRef);
           return {
-            userId: doc.id,
+            userId: docSnapshot.id,
             displayName: userData.data()?.displayName || 'Anonymous',
-            points: doc.data().points
+            points: docSnapshot.data().points
           };
         })
       );

@@ -51,6 +51,14 @@ const PostEditor: React.FC<PostEditorProps> = ({
     if (!e.target.files?.length) return;
     
     const file = e.target.files[0];
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please upload an image file');
+      return;
+    }
+    
+    // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
       setError('Image size must be less than 5MB');
       return;
@@ -60,10 +68,20 @@ const PostEditor: React.FC<PostEditorProps> = ({
     setError('');
 
     try {
-      const storageRef = ref(storage, `post-images/${Date.now()}-${file.name}`);
+      // Create a unique filename
+      const timestamp = Date.now();
+      const filename = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+      const storageRef = ref(storage, `post-images/${filename}`);
+      
+      // Upload the file
       await uploadBytes(storageRef, file);
+      
+      // Get the download URL
       const url = await getDownloadURL(storageRef);
       setImage(url);
+      
+      // Clear any previous errors
+      setError('');
     } catch (error) {
       console.error('Error uploading image:', error);
       setError('Failed to upload image. Please try again.');
@@ -117,21 +135,32 @@ const PostEditor: React.FC<PostEditorProps> = ({
           onChange={handleImageUpload}
           className="hidden"
           id="image-upload"
+          disabled={uploading}
         />
         <label
           htmlFor="image-upload"
-          className={`btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 hover:opacity-90 transition-opacity ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 hover:opacity-90 transition-opacity ${
+            uploading ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
           {uploading ? 'Uploading...' : 'Upload Featured Image'}
         </label>
         {image && (
-          <motion.img
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            src={image}
-            alt="Preview"
-            className="h-20 w-20 object-cover rounded"
-          />
+          <div className="relative">
+            <motion.img
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              src={image}
+              alt="Preview"
+              className="h-20 w-20 object-cover rounded"
+            />
+            <button
+              onClick={() => setImage(null)}
+              className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-700"
+            >
+              ×
+            </button>
+          </div>
         )}
       </div>
 

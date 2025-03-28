@@ -92,6 +92,11 @@ export default function TermsOfService() {
               <li>Is considered spam or excessive self-promotion</li>
               <li>Contains hate speech or discriminatory content</li>
               <li>Includes excessive use of capital letters or repetitive characters</li>
+              <li>Contains personal information of others without consent</li>
+              <li>Promotes violence or dangerous activities</li>
+              <li>Contains sexually explicit or adult content</li>
+              <li>Impersonates another person or organization</li>
+              <li>Contains false or misleading information</li>
             </ul>
             <p className="mt-4">
               We employ automated content moderation systems to detect and prevent spam, inappropriate content, and violations of our content policies. Users can report any content they believe violates these terms using the reporting feature. Reported content will be reviewed by our moderation team, and appropriate action will be taken, which may include content removal and account suspension.
@@ -108,6 +113,19 @@ export default function TermsOfService() {
               <li>Modify or create derivative works</li>
               <li>Use our trademarks or branding</li>
               <li>Attempt to gain unauthorized access to any part of our services</li>
+              <li>Reverse engineer or decompile our software</li>
+              <li>Use our content for commercial purposes without permission</li>
+              <li>Remove or alter any copyright notices</li>
+              <li>Use our platform to create competing services</li>
+            </ul>
+            <p className="mt-4">
+              For content you post on Retro Blog:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>You retain all ownership rights to your content</li>
+              <li>You grant us a license to use, display, and distribute your content</li>
+              <li>You are responsible for ensuring you have the rights to post the content</li>
+              <li>We may remove content that infringes on others' rights</li>
             </ul>
           </section>
 
@@ -116,6 +134,26 @@ export default function TermsOfService() {
             <p>
               We take your privacy seriously. Our Privacy Policy, which is incorporated into these Terms of Service, explains how we collect, use, and protect your personal information. By using Retro Blog, you consent to our data practices as described in the Privacy Policy.
             </p>
+            <p className="mt-4">
+              We collect and process the following types of information:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Account information (name, email, password)</li>
+              <li>Profile information (avatar, bio, social links)</li>
+              <li>Content you post and interactions with other users</li>
+              <li>Technical data (IP address, browser type, device information)</li>
+              <li>Usage data (pages visited, time spent, features used)</li>
+            </ul>
+            <p className="mt-4">
+              We use this information to:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Provide and improve our services</li>
+              <li>Personalize your experience</li>
+              <li>Communicate with you about your account and our services</li>
+              <li>Protect against fraud and abuse</li>
+              <li>Comply with legal obligations</li>
+            </ul>
           </section>
 
           <section className="space-y-4">
@@ -128,6 +166,19 @@ export default function TermsOfService() {
               <li>Change or eliminate features</li>
               <li>Introduce new fees or charges</li>
               <li>Modify our content policies</li>
+              <li>Change our pricing structure</li>
+              <li>Update our security measures</li>
+              <li>Modify our user interface</li>
+              <li>Change our data retention policies</li>
+            </ul>
+            <p className="mt-4">
+              We will notify users of significant changes through:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Email notifications</li>
+              <li>In-app announcements</li>
+              <li>Updates to our documentation</li>
+              <li>Blog posts or social media announcements</li>
             </ul>
           </section>
 
@@ -136,6 +187,27 @@ export default function TermsOfService() {
             <p>
               We may terminate or suspend your access to Retro Blog immediately, without prior notice, for conduct that we believe violates these Terms of Service or is harmful to other users, our business, or third parties, or for any other reason at our sole discretion.
             </p>
+            <p className="mt-4">
+              Grounds for termination include:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Violation of these Terms of Service</li>
+              <li>Repeated posting of inappropriate content</li>
+              <li>Harassment of other users</li>
+              <li>Creation of multiple accounts to evade bans</li>
+              <li>Attempting to compromise platform security</li>
+              <li>Engaging in fraudulent activities</li>
+              <li>Inactivity for an extended period</li>
+            </ul>
+            <p className="mt-4">
+              Upon termination:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Your account will be deactivated</li>
+              <li>Your content may be removed or preserved</li>
+              <li>You will lose access to premium features</li>
+              <li>You may not create new accounts without permission</li>
+            </ul>
           </section>
 
           <section className="space-y-4">
@@ -143,12 +215,49 @@ export default function TermsOfService() {
             <p>
               To the maximum extent permitted by law, Retro Blog and its affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly.
             </p>
+            <p className="mt-4">
+              This includes, but is not limited to:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Loss of data or business interruption</li>
+              <li>Errors or inaccuracies in content</li>
+              <li>Personal injury or property damage</li>
+              <li>Third-party actions or content</li>
+              <li>Service interruptions or technical issues</li>
+              <li>Security breaches or data leaks</li>
+              <li>User-generated content</li>
+              <li>External links or resources</li>
+            </ul>
           </section>
 
           <section className="space-y-4">
             <h2 className="text-2xl font-bold">9. Governing Law</h2>
             <p>
               These Terms of Service shall be governed by and construed in accordance with the laws of the jurisdiction in which we operate, without regard to its conflict of law provisions.
+            </p>
+            <p className="mt-4">
+              For users in different jurisdictions:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>You agree to submit to the exclusive jurisdiction of our courts</li>
+              <li>You waive any objections to venue or forum non conveniens</li>
+              <li>You agree to resolve disputes through arbitration</li>
+              <li>You acknowledge that these terms may be enforced in any court</li>
+            </ul>
+          </section>
+
+          <section className="space-y-4">
+            <h2 className="text-2xl font-bold">10. Contact Information</h2>
+            <p>
+              For questions about these Terms of Service, please contact us at:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Email: support@retroblog.com</li>
+              <li>Address: 123 Retro Street, Digital City, 12345</li>
+              <li>Phone: (555) 123-4567</li>
+            </ul>
+            <p className="mt-4">
+              We aim to respond to all inquiries within 48 hours during business days.
             </p>
           </section>
 

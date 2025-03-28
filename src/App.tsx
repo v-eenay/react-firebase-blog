@@ -20,6 +20,7 @@ import About from './pages/About';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
 import UserDashboard from './pages/UserDashboard';
+import TermsOfService from './pages/TermsOfService';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -62,6 +63,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/terms" element={<TermsOfService />} />
               <Route
                 path="/blog/:id"
                 element={

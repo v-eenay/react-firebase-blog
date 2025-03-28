@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { collection, query, where, orderBy, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { useNotifications } from '../contexts/NotificationContext';
 
 interface Post {
   id: string;
@@ -18,6 +21,7 @@ interface Post {
 export default function UserDashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { addNotification } = useNotifications();
   const [activeTab, setActiveTab] = useState<'posts' | 'drafts' | 'analytics'>('posts');
   const [posts, setPosts] = useState<Post[]>([]);
   const [drafts, setDrafts] = useState<Post[]>([]);
@@ -35,20 +39,67 @@ export default function UserDashboard() {
           createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
           updatedAt: doc.data().updatedAt?.toDate?.().toISOString() || new Date().toISOString()
         }));
-        setPosts(postsData);
+
+        // Separate posts and drafts
+        const publishedPosts = postsData.filter(post => post.status === 'published');
+        const draftPosts = postsData.filter(post => post.status === 'draft');
+        
+        setPosts(publishedPosts);
+        setDrafts(draftPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
+        addNotification({
+          type: 'error',
+          message: 'Failed to fetch posts. Please try again.'
+        });
       }
     };
     fetchData();
-  }, [user]);
+  }, [user, addNotification]);
 
   const handlePostAction = async (postId: string, action: 'edit' | 'delete' | 'publish') => {
     try {
-      // TODO: Implement post management actions
-      console.log(`${action} post ${postId}`);
+      const postRef = doc(db, 'posts', postId);
+      
+      switch (action) {
+        case 'edit':
+          navigate(`/edit-post/${postId}`);
+          break;
+          
+        case 'delete':
+          await deleteDoc(postRef);
+          setPosts(posts.filter(post => post.id !== postId));
+          setDrafts(drafts.filter(draft => draft.id !== postId));
+          addNotification({
+            type: 'success',
+            message: 'Post deleted successfully'
+          });
+          break;
+          
+        case 'publish':
+          await updateDoc(postRef, {
+            status: 'published',
+            updatedAt: new Date()
+          });
+          const updatedDrafts = drafts.filter(draft => draft.id !== postId);
+          setDrafts(updatedDrafts);
+          // Refresh posts to include the newly published post
+          const postToPublish = drafts.find(draft => draft.id === postId);
+          if (postToPublish) {
+            setPosts([{ ...postToPublish, status: 'published' }, ...posts]);
+          }
+          addNotification({
+            type: 'success',
+            message: 'Post published successfully'
+          });
+          break;
+      }
     } catch (error) {
       console.error('Error:', error);
+      addNotification({
+        type: 'error',
+        message: `Failed to ${action} post. Please try again.`
+      });
     }
   };
 
