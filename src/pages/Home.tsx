@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { collection, getDocs, query, orderBy, limit, where } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, limit, where, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { FaFacebook, FaTwitter, FaLinkedin, FaSearch } from 'react-icons/fa';
 
@@ -13,8 +13,8 @@ interface Post {
   authorName: string;
   categoryId: number;
   image?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   likes?: number;
   views?: number;
 }
@@ -34,10 +34,13 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setError(null);
+        
         // Fetch featured posts (newest posts)
         const postsQuery = query(
           collection(db, 'posts'),
@@ -45,12 +48,15 @@ export default function Home() {
           limit(5)
         );
         const postsSnapshot = await getDocs(postsQuery);
-        const postsData = postsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
-          updatedAt: doc.data().updatedAt?.toDate?.().toISOString() || new Date().toISOString()
-        })) as Post[];
+        const postsData = postsSnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(),
+            updatedAt: data.updatedAt instanceof Timestamp ? data.updatedAt.toDate() : new Date()
+          };
+        }) as Post[];
         setFeaturedPosts(postsData);
         setFilteredPosts(postsData);
 
@@ -61,10 +67,15 @@ export default function Home() {
           limit(4)
         );
         const popularSnapshot = await getDocs(popularQuery);
-        const popularData = popularSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Post[];
+        const popularData = popularSnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(),
+            updatedAt: data.updatedAt instanceof Timestamp ? data.updatedAt.toDate() : new Date()
+          };
+        }) as Post[];
         setPopularPosts(popularData);
 
         // Fetch categories
@@ -76,6 +87,7 @@ export default function Home() {
         setCategories(categoriesData);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setError('Failed to fetch posts. Please try again later.');
       }
     };
 
@@ -130,6 +142,21 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-paper">
+      {error && (
+        <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0 }}

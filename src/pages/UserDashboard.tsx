@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { collection, query, where, orderBy, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, orderBy, getDocs, deleteDoc, doc, updateDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useNotifications } from '../contexts/NotificationContext';
 
@@ -14,8 +14,9 @@ interface Post {
   views: number;
   likes: number;
   comments: number;
-  createdAt: string;
-  scheduledFor?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  scheduledFor?: Date;
 }
 
 export default function UserDashboard() {
@@ -25,20 +26,31 @@ export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState<'posts' | 'drafts' | 'analytics'>('posts');
   const [posts, setPosts] = useState<Post[]>([]);
   const [drafts, setDrafts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user) return;
       try {
+        setLoading(true);
         const postsRef = collection(db, 'posts');
-        const q = query(postsRef, where('authorId', '==', user.uid), orderBy('createdAt', 'desc'));
+        // First get all posts for the user
+        const q = query(postsRef, where('authorId', '==', user.uid));
         const postsSnapshot = await getDocs(q);
-        const postsData = postsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
-          updatedAt: doc.data().updatedAt?.toDate?.().toISOString() || new Date().toISOString()
-        }));
+        
+        const postsData = postsSnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(),
+            updatedAt: data.updatedAt instanceof Timestamp ? data.updatedAt.toDate() : new Date(),
+            scheduledFor: data.scheduledFor instanceof Timestamp ? data.scheduledFor.toDate() : undefined
+          };
+        });
+
+        // Sort posts by createdAt in memory
+        postsData.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
         // Separate posts and drafts
         const publishedPosts = postsData.filter(post => post.status === 'published');
@@ -52,6 +64,8 @@ export default function UserDashboard() {
           type: 'error',
           message: 'Failed to fetch posts. Please try again.'
         });
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();

@@ -25,6 +25,16 @@ interface Category {
   slug: string;
 }
 
+// Function to safely render HTML content
+const renderHTML = (html: string) => {
+  // Create a temporary div to parse HTML
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  
+  // Get text content without HTML tags
+  return tempDiv.textContent || tempDiv.innerText || '';
+};
+
 export default function Blog() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -142,7 +152,7 @@ export default function Blog() {
                   {post.title}
                 </h2>
                 <p className="text-gray-500 mb-4 line-clamp-3">
-                  {post.content}
+                  {renderHTML(post.content)}
                 </p>
                 <div className="flex flex-col gap-2">
                   <div className="flex justify-between items-center text-sm text-gray-500">
