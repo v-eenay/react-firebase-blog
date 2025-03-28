@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function Footer() {
+  const { user } = useAuth();
+
   return (
     <footer className="retro-footer">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -47,16 +50,33 @@ export default function Footer() {
                   Account
                 </h3>
                 <ul className="mt-4 space-y-4">
-                  <li>
-                    <Link to="/login" className="text-base hover:opacity-80">
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/signup" className="text-base hover:opacity-80">
-                      Sign Up
-                    </Link>
-                  </li>
+                  {!user ? (
+                    <>
+                      <li>
+                        <Link to="/login" className="text-base hover:opacity-80">
+                          Login
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/signup" className="text-base hover:opacity-80">
+                          Sign Up
+                        </Link>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li>
+                        <Link to="/dashboard" className="text-base hover:opacity-80">
+                          Dashboard
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to={`/profile/${user.uid}`} className="text-base hover:opacity-80">
+                          Profile
+                        </Link>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
             </div>
