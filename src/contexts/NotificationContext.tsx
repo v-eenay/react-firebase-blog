@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { collection, query, where, onSnapshot, addDoc, serverTimestamp, orderBy, limit, doc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, addDoc, serverTimestamp, orderBy, limit, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from './AuthContext';
 
@@ -79,14 +79,24 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   };
 
   const markAllAsRead = async () => {
-    const batch = db.batch();
-    notifications.forEach((notification) => {
-      if (!notification.read) {
+    try {
+      const batch = writeBatch(db);
+      const unreadNotifications = notifications.filter(n => !n.read);
+      
+      if (unreadNotifications.length === 0) return;
+
+      unreadNotifications.forEach((notification) => {
         const notificationRef = doc(db, 'notifications', notification.id);
-        batch.update(notificationRef, { read: true, updatedAt: serverTimestamp() });
-      }
-    });
-    await batch.commit();
+        batch.update(notificationRef, { 
+          read: true, 
+          updatedAt: serverTimestamp() 
+        });
+      });
+
+      await batch.commit();
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
   };
 
   const addNotification = async (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
