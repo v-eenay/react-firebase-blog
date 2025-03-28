@@ -1,0 +1,74 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "back": "Zurück",
+    "openMenu": "Hauptmenü öffnen"
+  },
+  "nav": {
+    "home": "Startseite",
+    "blog": "Blog",
+    "categories": "Kategorien",
+    "about": "Über uns",
+    "terms": "Nutzungsbedingungen",
+    "dashboard": "Dashboard",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "logout": "Abmelden",
+    "adminDashboard": "Admin-Dashboard",
+    "myDashboard": "Mein Dashboard"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "resetPassword": "Passwort zurücksetzen"
+  },
+  "blog": {
+    "createPost": "Beitrag erstellen",
+    "editPost": "Beitrag bearbeiten",
+    "deletePost": "Beitrag löschen",
+    "title": "Titel",
+    "content": "Inhalt",
+    "category": "Kategorie",
+    "tags": "Tags",
+    "publish": "Veröffentlichen",
+    "draft": "Als Entwurf speichern",
+    "preview": "Vorschau"
+  },
+  "terms": {
+    "title": "Nutzungsbedingungen",
+    "lastUpdated": "Zuletzt aktualisiert",
+    "acceptance": "Annahme der Bedingungen",
+    "description": "Durch den Zugriff auf und die Nutzung von Retro Blog bestätigen Sie, dass Sie diese Nutzungsbedingungen gelesen, verstanden und akzeptiert haben. Diese Bedingungen stellen eine rechtlich bindende Vereinbarung zwischen Ihnen und Retro Blog bezüglich Ihrer Nutzung unserer Dienste dar.",
+    "useLicense": "Nutzungslizenz",
+    "permission": "Es wird Ihnen eine beschränkte, nicht ausschließliche und nicht übertragbare Lizenz gewährt, auf Retro Blog zuzugreifen und es für Ihren persönlichen, nicht kommerziellen Gebrauch zu nutzen.",
+    "disclaimer": "Haftungsausschluss",
+    "warranty": "Retro Blog wird 'wie besehen' ohne jegliche Garantien, weder ausdrücklich noch stillschweigend, zur Verfügung gestellt.",
+    "limitations": "Haftungsbeschränkungen",
+    "liability": "Im gesetzlich zulässigen Umfang haften Retro Blog und seine Tochtergesellschaften nicht für indirekte, zufällige, besondere, Folgeschäden oder Strafschäden oder für entgangene Gewinne oder Einnahmen."
+  },
+  "profile": {
+    "editProfile": "Profil bearbeiten",
+    "username": "Benutzername",
+    "bio": "Über mich",
+    "avatar": "Profilbild",
+    "saveChanges": "Änderungen speichern",
+    "changePassword": "Passwort ändern"
+  },
+  "admin": {
+    "dashboard": "Admin-Dashboard",
+    "users": "Benutzer",
+    "posts": "Beiträge",
+    "comments": "Kommentare",
+    "settings": "Website-Einstellungen",
+    "analytics": "Analysen"
+  }
+} 

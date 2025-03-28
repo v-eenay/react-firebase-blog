@@ -4,22 +4,24 @@ import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NotificationBell from '../NotificationBell';
 import ThemeToggle from '../ThemeToggle';
+import LanguageSelector from '../LanguageSelector';
+import { useTranslation } from 'react-i18next';
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'Categories', href: '/categories' },
-  { name: 'About', href: '/about' },
-  { name: 'Terms of Service', href: '/terms' }
+  { name: 'nav.home', href: '/' },
+  { name: 'nav.blog', href: '/blog' },
+  { name: 'nav.categories', href: '/categories' },
+  { name: 'nav.about', href: '/about' },
+  { name: 'nav.terms', href: '/terms' }
 ];
 
 const adminNavigation = [
-  { name: 'Admin Dashboard', href: '/admin' }
+  { name: 'nav.adminDashboard', href: '/admin' }
 ];
 
 const userLinks = [
-  { name: 'My Dashboard', href: '/dashboard' },
-  { name: 'Profile', href: '/profile' }
+  { name: 'nav.myDashboard', href: '/dashboard' },
+  { name: 'nav.profile', href: '/profile' }
 ];
 
 function classNames(...classes: string[]) {
@@ -29,6 +31,7 @@ function classNames(...classes: string[]) {
 export default function Header() {
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   
   return (
     <>
@@ -55,13 +58,14 @@ export default function Header() {
                           'inline-flex items-center border-b-2 px-3 pt-1 text-sm font-serif font-medium transition-colors duration-200'
                         )}
                       >
-                        {item.name}
+                        {t(item.name)}
                       </Link>
                     ))}
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-                      <ThemeToggle />
+                  <LanguageSelector />
+                  <ThemeToggle />
                   {user ? (
                     <>
                       <NotificationBell />
@@ -72,22 +76,22 @@ export default function Header() {
                             to={item.href}
                             className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)]"
                           >
-                            {item.name}
+                            {t(item.name)}
                           </Link>
                         ))}
-                        <button onClick={() => logout()} className="btn-retro">Logout</button>
+                        <button onClick={() => logout()} className="btn-retro">{t('nav.logout')}</button>
                       </div>
                     </>
                   ) : (
                     <>
-                      <Link to="/login" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">Login</Link>
-                      <Link to="/signup" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">Sign Up</Link>
+                      <Link to="/login" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">{t('auth.login')}</Link>
+                      <Link to="/signup" className="btn-retro bg-[var(--color-ink)] text-[var(--color-paper)] px-4 py-2 rounded-none font-serif hover:opacity-90">{t('auth.register')}</Link>
                     </>
                   )}
                 </div>
                 <div className="-mr-2 flex items-center sm:hidden">
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-[var(--color-accent)] hover:bg-[var(--color-paper)]/80 hover:text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[var(--color-ink)]">
-                    <span className="sr-only">Open main menu</span>
+                    <span className="sr-only">{t('common.openMenu')}</span>
                     {open ? <XMarkIcon className="block h-6 w-6" aria-hidden="true" /> : <Bars3Icon className="block h-6 w-6" aria-hidden="true" />}
                   </Disclosure.Button>
                 </div>
@@ -102,22 +106,58 @@ export default function Header() {
                     to={item.href}
                     className={classNames(
                       location.pathname === item.href
-                        ? 'border-[var(--color-ink)] text-[var(--color-ink)] bg-[var(--color-paper)]/80'
-                        : 'border-transparent text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50',
-                      'block border-l-4 py-3 pl-4 pr-4 text-base font-serif font-medium transition-colors duration-200'
+                        ? 'bg-[var(--color-paper)]/80 text-[var(--color-ink)]'
+                        : 'text-[var(--color-accent)] hover:bg-[var(--color-paper)]/80 hover:text-[var(--color-ink)]',
+                      'block px-3 py-2 text-base font-serif font-medium'
                     )}
                   >
-                    {item.name}
+                    {t(item.name)}
                   </Disclosure.Button>
                 ))}
-                {user && (
+                <div className="px-3 py-2">
+                  <LanguageSelector />
+                </div>
+                <div className="px-3 py-2">
+                  <ThemeToggle />
+                </div>
+                {user ? (
                   <>
-                    <Link to="/profile" className="flex items-center px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200">
-                      Profile
-                    </Link>
-                    <button onClick={() => logout()} className="block w-full text-left px-4 py-3 text-base font-serif font-medium text-[var(--color-accent)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper)]/50 transition-colors duration-200">
-                      Logout
-                    </button>
+                    <div className="px-3 py-2">
+                      <NotificationBell />
+                    </div>
+                    {(user.role === 'admin' ? adminNavigation : userLinks).map((item) => (
+                      <Disclosure.Button
+                        key={item.name}
+                        as={Link}
+                        to={item.href}
+                        className="block px-3 py-2 text-base font-serif font-medium text-[var(--color-accent)] hover:bg-[var(--color-paper)]/80 hover:text-[var(--color-ink)]"
+                      >
+                        {t(item.name)}
+                      </Disclosure.Button>
+                    ))}
+                    <Disclosure.Button
+                      onClick={() => logout()}
+                      className="block w-full text-left px-3 py-2 text-base font-serif font-medium text-[var(--color-accent)] hover:bg-[var(--color-paper)]/80 hover:text-[var(--color-ink)]"
+                    >
+                      {t('nav.logout')}
+                    </Disclosure.Button>
+                  </>
+                ) : (
+                  <>
+                    <Disclosure.Button
+                      as={Link}
+                      to="/login"
+                      className="block px-3 py-2 text-base font-serif font-medium text-[var(--color-accent)] hover:bg-[var(--color-paper)]/80 hover:text-[var(--color-ink)]"
+                    >
+                      {t('auth.login')}
+                    </Disclosure.Button>
+                    <Disclosure.Button
+                      as={Link}
+                      to="/signup"
+                      className="block px-3 py-2 text-base font-serif font-medium text-[var(--color-accent)] hover:bg-[var(--color-paper)]/80 hover:text-[var(--color-ink)]"
+                    >
+                      {t('auth.register')}
+                    </Disclosure.Button>
                   </>
                 )}
               </div>

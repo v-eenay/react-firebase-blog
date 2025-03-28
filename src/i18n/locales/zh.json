@@ -1,0 +1,74 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "back": "返回",
+    "openMenu": "打开主菜单"
+  },
+  "nav": {
+    "home": "首页",
+    "blog": "博客",
+    "categories": "分类",
+    "about": "关于",
+    "terms": "服务条款",
+    "dashboard": "仪表板",
+    "profile": "个人资料",
+    "settings": "设置",
+    "logout": "退出登录",
+    "adminDashboard": "管理仪表板",
+    "myDashboard": "我的仪表板"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "email": "电子邮箱",
+    "password": "密码",
+    "forgotPassword": "忘记密码？",
+    "resetPassword": "重置密码"
+  },
+  "blog": {
+    "createPost": "创建文章",
+    "editPost": "编辑文章",
+    "deletePost": "删除文章",
+    "title": "标题",
+    "content": "内容",
+    "category": "分类",
+    "tags": "标签",
+    "publish": "发布",
+    "draft": "保存草稿",
+    "preview": "预览"
+  },
+  "terms": {
+    "title": "服务条款",
+    "lastUpdated": "最后更新",
+    "acceptance": "条款接受",
+    "description": "通过访问和使用 Retro Blog，即表示您已阅读、理解并同意受这些服务条款的约束。这些条款构成您与 Retro Blog 之间关于使用我们服务的具有法律约束力的协议。",
+    "useLicense": "使用许可",
+    "permission": "您被授予有限的、非排他性的、不可转让的许可，以访问和使用 Retro Blog 用于您的个人、非商业用途。",
+    "disclaimer": "免责声明",
+    "warranty": "Retro Blog 按\"原样\"提供，不提供任何明示或暗示的保证。",
+    "limitations": "责任限制",
+    "liability": "在法律允许的最大范围内，Retro Blog 及其附属公司不对任何间接、附带、特殊、后果性或惩罚性损害，或任何利润或收入损失承担责任。"
+  },
+  "profile": {
+    "editProfile": "编辑个人资料",
+    "username": "用户名",
+    "bio": "个人简介",
+    "avatar": "头像",
+    "saveChanges": "保存更改",
+    "changePassword": "更改密码"
+  },
+  "admin": {
+    "dashboard": "管理仪表板",
+    "users": "用户",
+    "posts": "文章",
+    "comments": "评论",
+    "settings": "网站设置",
+    "analytics": "分析"
+  }
+} 

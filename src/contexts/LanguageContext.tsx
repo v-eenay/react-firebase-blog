@@ -1,12 +1,11 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useEffect, ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Language = 'en' | 'es' | 'fr' | 'de' | 'zh';
 
 interface LanguageContextType {
   currentLanguage: Language;
   setLanguage: (lang: Language) => void;
-  translate: (text: string, targetLang: Language) => Promise<string>;
-  isTranslating: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -24,54 +23,23 @@ interface LanguageProviderProps {
 }
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [isTranslating, setIsTranslating] = useState(false);
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('preferredLanguage') as Language;
     if (savedLanguage) {
-      setCurrentLanguage(savedLanguage);
+      i18n.changeLanguage(savedLanguage);
     }
-  }, []);
+  }, [i18n]);
 
   const setLanguage = (lang: Language) => {
-    setCurrentLanguage(lang);
+    i18n.changeLanguage(lang);
     localStorage.setItem('preferredLanguage', lang);
   };
 
-  const translate = async (text: string, targetLang: Language): Promise<string> => {
-    if (targetLang === currentLanguage) return text;
-    
-    setIsTranslating(true);
-    try {
-      const response = await fetch('https://translation.googleapis.com/language/translate/v2', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.VITE_GOOGLE_TRANSLATE_API_KEY}`
-        },
-        body: JSON.stringify({
-          q: text,
-          target: targetLang,
-          source: currentLanguage
-        })
-      });
-
-      const data = await response.json();
-      return data.data.translations[0].translatedText;
-    } catch (error) {
-      console.error('Translation error:', error);
-      return text;
-    } finally {
-      setIsTranslating(false);
-    }
-  };
-
   const value = {
-    currentLanguage,
-    setLanguage,
-    translate,
-    isTranslating
+    currentLanguage: i18n.language as Language,
+    setLanguage
   };
 
   return (

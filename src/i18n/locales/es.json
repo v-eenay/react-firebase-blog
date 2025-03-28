@@ -1,0 +1,74 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "openMenu": "Abrir menú principal"
+  },
+  "nav": {
+    "home": "Inicio",
+    "blog": "Blog",
+    "categories": "Categorías",
+    "about": "Acerca de",
+    "terms": "Términos de servicio",
+    "dashboard": "Panel",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión",
+    "adminDashboard": "Panel de administración",
+    "myDashboard": "Mi panel"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer contraseña"
+  },
+  "blog": {
+    "createPost": "Crear publicación",
+    "editPost": "Editar publicación",
+    "deletePost": "Eliminar publicación",
+    "title": "Título",
+    "content": "Contenido",
+    "category": "Categoría",
+    "tags": "Etiquetas",
+    "publish": "Publicar",
+    "draft": "Guardar borrador",
+    "preview": "Vista previa"
+  },
+  "terms": {
+    "title": "Términos de servicio",
+    "lastUpdated": "Última actualización",
+    "acceptance": "Aceptación de términos",
+    "description": "Al acceder y utilizar Retro Blog, usted reconoce que ha leído, entendido y acepta estar sujeto a estos Términos de servicio. Estos términos constituyen un acuerdo legalmente vinculante entre usted y Retro Blog con respecto al uso de nuestros servicios.",
+    "useLicense": "Licencia de uso",
+    "permission": "Se le otorga un permiso limitado, no exclusivo y no transferible para acceder y utilizar Retro Blog para su uso personal y no comercial.",
+    "disclaimer": "Descargo de responsabilidad",
+    "warranty": "Retro Blog se proporciona 'tal cual' sin garantías de ningún tipo, ya sean expresas o implícitas.",
+    "limitations": "Limitaciones de responsabilidad",
+    "liability": "En la medida máxima permitida por la ley, Retro Blog y sus afiliados no serán responsables por ningún daño indirecto, incidental, especial, consecuente o punitivo, o cualquier pérdida de beneficios o ingresos."
+  },
+  "profile": {
+    "editProfile": "Editar perfil",
+    "username": "Nombre de usuario",
+    "bio": "Biografía",
+    "avatar": "Avatar",
+    "saveChanges": "Guardar cambios",
+    "changePassword": "Cambiar contraseña"
+  },
+  "admin": {
+    "dashboard": "Panel de administración",
+    "users": "Usuarios",
+    "posts": "Publicaciones",
+    "comments": "Comentarios",
+    "settings": "Configuración del sitio",
+    "analytics": "Analíticas"
+  }
+} 

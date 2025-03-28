@@ -1,0 +1,74 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "openMenu": "Ouvrir le menu principal"
+  },
+  "nav": {
+    "home": "Accueil",
+    "blog": "Blog",
+    "categories": "Catégories",
+    "about": "À propos",
+    "terms": "Conditions d'utilisation",
+    "dashboard": "Tableau de bord",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "adminDashboard": "Tableau de bord administrateur",
+    "myDashboard": "Mon tableau de bord"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "resetPassword": "Réinitialiser le mot de passe"
+  },
+  "blog": {
+    "createPost": "Créer une publication",
+    "editPost": "Modifier la publication",
+    "deletePost": "Supprimer la publication",
+    "title": "Titre",
+    "content": "Contenu",
+    "category": "Catégorie",
+    "tags": "Tags",
+    "publish": "Publier",
+    "draft": "Enregistrer comme brouillon",
+    "preview": "Aperçu"
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "lastUpdated": "Dernière mise à jour",
+    "acceptance": "Acceptation des conditions",
+    "description": "En accédant et en utilisant Retro Blog, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Conditions d'utilisation. Ces conditions constituent un accord juridiquement contraignant entre vous et Retro Blog concernant votre utilisation de nos services.",
+    "useLicense": "Licence d'utilisation",
+    "permission": "Une licence limitée, non exclusive et non transférable vous est accordée pour accéder et utiliser Retro Blog à des fins personnelles et non commerciales.",
+    "disclaimer": "Avis de non-responsabilité",
+    "warranty": "Retro Blog est fourni 'tel quel' sans garanties d'aucune sorte, expresses ou implicites.",
+    "limitations": "Limitations de responsabilité",
+    "liability": "Dans la mesure maximale autorisée par la loi, Retro Blog et ses affiliés ne seront pas responsables des dommages indirects, accessoires, spéciaux, consécutifs ou punitifs, ou de toute perte de profits ou de revenus."
+  },
+  "profile": {
+    "editProfile": "Modifier le profil",
+    "username": "Nom d'utilisateur",
+    "bio": "Biographie",
+    "avatar": "Avatar",
+    "saveChanges": "Enregistrer les modifications",
+    "changePassword": "Changer le mot de passe"
+  },
+  "admin": {
+    "dashboard": "Tableau de bord administrateur",
+    "users": "Utilisateurs",
+    "posts": "Publications",
+    "comments": "Commentaires",
+    "settings": "Paramètres du site",
+    "analytics": "Analytiques"
+  }
+} 
