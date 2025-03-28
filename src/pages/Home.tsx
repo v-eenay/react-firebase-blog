@@ -35,12 +35,21 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         setError(null);
         
+        if (!db) {
+          console.error('Firebase db is not initialized');
+          throw new Error('Firebase is not initialized. Please check your configuration.');
+        }
+
+        console.log('Fetching data from Firebase...');
+
         // Fetch featured posts (newest posts)
         const postsQuery = query(
           collection(db, 'posts'),
@@ -48,6 +57,8 @@ export default function Home() {
           limit(5)
         );
         const postsSnapshot = await getDocs(postsQuery);
+        console.log('Posts fetched:', postsSnapshot.size);
+        
         const postsData = postsSnapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -67,6 +78,8 @@ export default function Home() {
           limit(4)
         );
         const popularSnapshot = await getDocs(popularQuery);
+        console.log('Popular posts fetched:', popularSnapshot.size);
+        
         const popularData = popularSnapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -80,6 +93,8 @@ export default function Home() {
 
         // Fetch categories
         const categoriesSnapshot = await getDocs(collection(db, 'categories'));
+        console.log('Categories fetched:', categoriesSnapshot.size);
+        
         const categoriesData = categoriesSnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
@@ -88,6 +103,8 @@ export default function Home() {
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Failed to fetch posts. Please try again later.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -140,10 +157,18 @@ export default function Home() {
     filterPosts();
   }, [searchQuery, selectedCategory, featuredPosts]);
 
-  return (
-    <div className="min-h-screen bg-paper">
-      {error && (
-        <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="bg-red-50 border-l-4 border-red-400 p-4 max-w-md">
           <div className="flex">
             <div className="flex-shrink-0">
               <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -152,11 +177,18 @@ export default function Home() {
             </div>
             <div className="ml-3">
               <p className="text-sm text-red-700">{error}</p>
+              <p className="mt-2 text-sm text-red-600">
+                Please check your Firebase configuration and try again.
+              </p>
             </div>
           </div>
         </div>
-      )}
+      </div>
+    );
+  }
 
+  return (
+    <div className="min-h-screen bg-paper">
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0 }}
@@ -212,6 +244,7 @@ export default function Home() {
               className={`w-2 h-2 rounded-full transition-colors ${
                 index === currentSlide ? 'bg-white' : 'bg-gray-400'
               }`}
+              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
@@ -236,6 +269,7 @@ export default function Home() {
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="input-retro px-4 py-2 rounded-none"
+              aria-label="Select category"
             >
               <option value="all">All Categories</option>
               {categories.map((cat) => (

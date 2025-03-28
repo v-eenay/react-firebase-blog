@@ -12,22 +12,69 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Validate required configuration
-if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
-  throw new Error('Missing required Firebase configuration. Please check your environment variables.');
-}
+// Log the configuration (without sensitive values)
+console.log('Firebase Config:', {
+  authDomain: firebaseConfig.authDomain,
+  projectId: firebaseConfig.projectId,
+  hasApiKey: !!firebaseConfig.apiKey,
+  hasAuthDomain: !!firebaseConfig.authDomain,
+  hasProjectId: !!firebaseConfig.projectId
+});
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+let app;
+let auth;
+let db;
+let storage;
 
-// Enable better error messages in development
-if (import.meta.env.DEV) {
-  console.log('Firebase initialized with config:', {
-    authDomain: firebaseConfig.authDomain,
-    projectId: firebaseConfig.projectId
-  });
+try {
+  // Validate required configuration
+  if (!firebaseConfig.apiKey) {
+    throw new Error('Missing Firebase API Key');
+  }
+  if (!firebaseConfig.authDomain) {
+    throw new Error('Missing Firebase Auth Domain');
+  }
+  if (!firebaseConfig.projectId) {
+    throw new Error('Missing Firebase Project ID');
+  }
+
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
+
+  console.log('Firebase initialized successfully');
+} catch (error) {
+  console.error('Error initializing Firebase:', error);
+  // Create mock objects for development
+  if (import.meta.env.DEV) {
+    console.log('Creating mock Firebase objects for development');
+    db = {
+      collection: () => ({
+        get: async () => ({ docs: [] }),
+        add: async () => ({ id: 'mock-id' }),
+        doc: () => ({
+          get: async () => ({ data: () => ({}) }),
+          set: async () => {},
+          update: async () => {},
+          delete: async () => {}
+        })
+      })
+    };
+    auth = {
+      currentUser: null,
+      onAuthStateChanged: () => () => {},
+      signInWithEmailAndPassword: async () => ({ user: null }),
+      createUserWithEmailAndPassword: async () => ({ user: null }),
+      signOut: async () => {}
+    };
+    storage = {
+      ref: () => ({
+        put: async () => {},
+        getDownloadURL: async () => ''
+      })
+    };
+  }
 }
 
 export { auth, db, storage };

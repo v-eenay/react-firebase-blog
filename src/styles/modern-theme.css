@@ -1,29 +1,28 @@
 /* Modern Minimal Theme */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Light theme colors */
+  /* Light theme colors - Vibrant masculine palette */
   --color-bg: #ffffff;
-  --color-surface: #f8fafc;
-  --color-surface-hover: #f1f5f9;
-  --color-text: #0f172a;
-  --color-text-secondary: #475569;
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-secondary: #4f46e5;
-  --color-secondary-hover: #4338ca;
-  --color-accent: #06b6d4;
-  --color-accent-hover: #0891b2;
-  --color-success: #059669;
-  --color-success-hover: #047857;
-  --color-danger: #dc2626;
-  --color-danger-hover: #b91c1c;
-  --color-warning: #d97706;
-  --color-warning-hover: #b45309;
-  --color-border: #e2e8f0;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --color-surface: #f0f4f8;
+  --color-surface-hover: #e2e8f0;
+  --color-text: #1a202c;
+  --color-text-secondary: #2d3748;
+  --color-primary: #2b6cb0;  /* Deep blue */
+  --color-primary-hover: #2c5282;
+  --color-secondary: #4c51bf;  /* Rich indigo */
+  --color-secondary-hover: #434190;
+  --color-accent: #00a3c4;  /* Bright cyan */
+  --color-accent-hover: #0987a0;
+  --color-success: #2f855a;  /* Deep green */
+  --color-success-hover: #276749;
+  --color-danger: #c53030;  /* Deep red */
+  --color-danger-hover: #9b2c2c;
+  --color-warning: #dd6b20;  /* Deep orange */
+  --color-warning-hover: #c05621;
+  --color-border: #cbd5e0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.15);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.15), 0 4px 6px -4px rgb(0 0 0 / 0.15);
 }
 
 /* Base styles */
@@ -74,6 +73,8 @@ body {
 .btn-retro.btn-primary {
   background-color: var(--color-primary);
   color: white;
+  font-weight: 700;
+  letter-spacing: 0.025em;
 }
 
 .btn-retro.btn-primary:hover {
@@ -86,6 +87,8 @@ body {
 .btn-retro.btn-secondary {
   background-color: var(--color-secondary);
   color: white;
+  font-weight: 700;
+  letter-spacing: 0.025em;
 }
 
 .btn-retro.btn-secondary:hover {
@@ -160,19 +163,20 @@ body {
 .input-retro {
   font-family: 'Space Grotesk', sans-serif;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   color: var(--color-text);
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
   width: 100%;
   transition: all 0.2s ease;
   border-radius: 6px;
+  font-weight: 500;
 }
 
 .input-retro:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.2);
 }
 
 /* Modern Article Card Styles */
@@ -189,18 +193,20 @@ body {
 .article-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
 }
 
 /* Modern Link Styles */
 a {
   color: var(--color-primary);
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 a:hover {
   color: var(--color-primary-hover);
+  text-decoration: underline;
 }
 
 /* Modern List Styles */
@@ -234,6 +240,7 @@ blockquote {
   background-color: var(--color-surface);
   border-radius: 0 6px 6px 0;
   padding: 1rem;
+  font-weight: 500;
 }
 
 /* Modern Table Styles */
@@ -256,8 +263,15 @@ th, td {
 
 th {
   background-color: var(--color-surface);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+}
+
+td {
+  font-weight: 500;
 }
 
 /* Modern Form Element Styles */
@@ -288,12 +302,12 @@ select:focus, textarea:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: var(--color-primary);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-secondary);
+  background: var(--color-primary-hover);
 }
 
 /* Modern Loading Spinner */
@@ -311,29 +325,29 @@ select:focus, textarea:focus {
   100% { transform: rotate(360deg); }
 }
 
-/* Dark theme overrides */
+/* Dark theme overrides - Vibrant masculine dark palette */
 [data-theme="dark"] {
-  --color-bg: #0f172a;
-  --color-surface: #1e293b;
-  --color-surface-hover: #334155;
-  --color-text: #f8fafc;
-  --color-text-secondary: #cbd5e1;
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-secondary: #6366f1;
-  --color-secondary-hover: #4f46e5;
-  --color-accent: #06b6d4;
-  --color-accent-hover: #0891b2;
-  --color-success: #10b981;
-  --color-success-hover: #059669;
-  --color-danger: #ef4444;
-  --color-danger-hover: #dc2626;
-  --color-warning: #f59e0b;
-  --color-warning-hover: #d97706;
-  --color-border: #334155;
+  --color-bg: #0a192f;  /* Deep navy */
+  --color-surface: #112240;  /* Slightly lighter navy */
+  --color-surface-hover: #1a365d;  /* Rich blue */
+  --color-text: #f7fafc;  /* Bright white */
+  --color-text-secondary: #cbd5e0;  /* Light gray */
+  --color-primary: #60a5fa;  /* Bright blue */
+  --color-primary-hover: #3b82f6;
+  --color-secondary: #818cf8;  /* Bright indigo */
+  --color-secondary-hover: #6366f1;
+  --color-accent: #22d3ee;  /* Bright cyan */
+  --color-accent-hover: #06b6d4;
+  --color-success: #34d399;  /* Bright green */
+  --color-success-hover: #10b981;
+  --color-danger: #f87171;  /* Bright red */
+  --color-danger-hover: #ef4444;
+  --color-warning: #fbbf24;  /* Bright yellow */
+  --color-warning-hover: #f59e0b;
+  --color-border: #2d3748;  /* Dark gray */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
 }
 
 /* Modern Navigation */
@@ -355,10 +369,11 @@ nav {
 /* Modern Headings */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--color-text);
   line-height: 1.2;
   margin-bottom: 1rem;
+  letter-spacing: -0.025em;
 }
 
 h1 { font-size: 2.5rem; }

@@ -1,10 +1,90 @@
-@tailwind base;
-
 /* Import custom base styles */
-@import './styles/retro.css';
-@import './styles/dark-theme.css';
+@import './styles/modern-theme.css';
 
+@tailwind base;
 @tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+:root {
+  --color-paper: #ffffff;
+  --color-ink: #1a202c;
+  --color-accent: #2b6cb0;
+  --color-accent-hover: #2c5282;
+  --color-success: #2f855a;
+  --color-success-hover: #276749;
+  --color-danger: #c53030;
+  --color-danger-hover: #9b2c2c;
+  --color-warning: #dd6b20;
+  --color-warning-hover: #c05621;
+  --color-border: #cbd5e0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.15);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.15), 0 4px 6px -4px rgb(0 0 0 / 0.15);
+}
+
+/* Dark theme overrides */
+[data-theme="dark"] {
+  --color-paper: #0a192f;
+  --color-ink: #f7fafc;
+  --color-accent: #60a5fa;
+  --color-accent-hover: #3b82f6;
+  --color-success: #34d399;
+  --color-success-hover: #10b981;
+  --color-danger: #f87171;
+  --color-danger-hover: #ef4444;
+  --color-warning: #fbbf24;
+  --color-warning-hover: #f59e0b;
+  --color-border: #2d3748;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+}
+
+/* Global styles */
+body {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.5;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-hover);
+}
+
+/* Loading spinner */
+.loading-spinner {
+  border: 2px solid var(--color-surface);
+  border-top: 2px solid var(--color-accent);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 /* Custom components layer */
 @layer components {
@@ -24,8 +104,6 @@
     @apply max-w-7xl mx-auto p-8 bg-paper shadow-lg;
   }
 }
-
-@tailwind utilities;
 
 /* Custom utilities layer */
 @layer utilities {

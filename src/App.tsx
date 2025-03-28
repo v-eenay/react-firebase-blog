@@ -57,62 +57,62 @@ export default function App() {
           <GamificationProvider>
             <LanguageProvider>
               <ModerationProvider>
-          <ThemeProvider>
-            <Router>
-            <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/terms" element={<TermsOfService />} />
-              <Route
-                path="/blog/:id"
-                element={
-                  <ProtectedRoute>
-                    <BlogPost />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/login" element={<Login />} /> 
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/about" element={<About />} />
-              <Route
-                path="/profile/:id?"
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute requireAdmin={true}>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <UserDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/create-post"
-                element={
-                  <ProtectedRoute>
-                    <CreatePost />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-            </Layout>
-            </Router>
-          </ThemeProvider>
-        </ModerationProvider>
+                <ThemeProvider>
+                  <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                    <Layout>
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/blog" element={<Blog />} />
+                        <Route path="/terms" element={<TermsOfService />} />
+                        <Route
+                          path="/blog/:id"
+                          element={
+                            <ProtectedRoute>
+                              <BlogPost />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route path="/categories" element={<Categories />} />
+                        <Route path="/login" element={<Login />} /> 
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/about" element={<About />} />
+                        <Route
+                          path="/profile/:id?"
+                          element={
+                            <ProtectedRoute>
+                              <Profile />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/admin"
+                          element={
+                            <ProtectedRoute requireAdmin={true}>
+                              <AdminDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/dashboard"
+                          element={
+                            <ProtectedRoute>
+                              <UserDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/create-post"
+                          element={
+                            <ProtectedRoute>
+                              <CreatePost />
+                            </ProtectedRoute>
+                          }
+                        />
+                      </Routes>
+                    </Layout>
+                  </Router>
+                </ThemeProvider>
+              </ModerationProvider>
             </LanguageProvider>
           </GamificationProvider>
         </CollaborationProvider>

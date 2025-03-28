@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { useState, useEffect, useRef } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import { storage } from '../firebase/config';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { motion } from 'framer-motion';
+import QuillEditor from './QuillEditor';
+import 'react-quill/dist/quill.snow.css';
 
 interface PostEditorProps {
   initialContent?: string;
@@ -35,6 +35,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
   const [image, setImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const quillRef = useRef<ReactQuill>(null);
 
   const modules = {
     toolbar: [
@@ -45,7 +46,23 @@ const PostEditor: React.FC<PostEditorProps> = ({
       ['link', 'image', 'video'],
       ['clean']
     ],
+    clipboard: {
+      matchVisual: false
+    },
+    keyboard: {
+      bindings: {
+        tab: false
+      }
+    }
   };
+
+  const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike',
+    'list', 'bullet',
+    'blockquote', 'code-block',
+    'link', 'image', 'video'
+  ];
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
@@ -164,12 +181,14 @@ const PostEditor: React.FC<PostEditorProps> = ({
         )}
       </div>
 
-      <ReactQuill
+      <QuillEditor
         value={content}
         onChange={setContent}
         modules={modules}
+        formats={formats}
         className="h-96 mb-24 [&_.ql-editor]:min-h-[300px] [&_.ql-toolbar]:border-2 [&_.ql-toolbar]:border-[var(--color-ink)] [&_.ql-container]:border-2 [&_.ql-container]:border-[var(--color-ink)] [&_.ql-editor]:font-serif [&_.ql-container]:mb-12"
         theme="snow"
+        preserveWhitespace
       />
 
       <div className="flex items-center gap-4 mt-8 relative z-20 bg-[var(--color-paper)] p-4 border-t-2 border-[var(--color-ink)] sticky bottom-0">

@@ -120,6 +120,7 @@ export default function Blog() {
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="input-retro"
+              aria-label="Select category"
             >
               <option value="all">All Categories</option>
               {categories.map(category => (
