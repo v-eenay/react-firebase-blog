@@ -1,25 +1,25 @@
 /* Modern Minimal Theme */
 
 :root {
-  /* Light theme colors - Vibrant masculine palette */
+  /* Light theme colors - High contrast palette */
   --color-bg: #ffffff;
-  --color-surface: #f0f4f8;
-  --color-surface-hover: #e2e8f0;
-  --color-text: #1a202c;
-  --color-text-secondary: #2d3748;
-  --color-primary: #2b6cb0;  /* Deep blue */
-  --color-primary-hover: #2c5282;
-  --color-secondary: #4c51bf;  /* Rich indigo */
-  --color-secondary-hover: #434190;
-  --color-accent: #00a3c4;  /* Bright cyan */
-  --color-accent-hover: #0987a0;
-  --color-success: #2f855a;  /* Deep green */
-  --color-success-hover: #276749;
-  --color-danger: #c53030;  /* Deep red */
-  --color-danger-hover: #9b2c2c;
-  --color-warning: #dd6b20;  /* Deep orange */
-  --color-warning-hover: #c05621;
-  --color-border: #cbd5e0;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8fafc;
+  --color-text: #000000;
+  --color-text-secondary: #1e293b;
+  --color-primary: #2563eb;  /* Bright blue */
+  --color-primary-hover: #1d4ed8;
+  --color-secondary: #4f46e5;  /* Bright indigo */
+  --color-secondary-hover: #4338ca;
+  --color-accent: #0891b2;  /* Bright cyan */
+  --color-accent-hover: #0e7490;
+  --color-success: #16a34a;  /* Bright green */
+  --color-success-hover: #15803d;
+  --color-danger: #dc2626;  /* Bright red */
+  --color-danger-hover: #b91c1c;
+  --color-warning: #d97706;  /* Bright orange */
+  --color-warning-hover: #b45309;
+  --color-border: #e5e7eb;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.15);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.15), 0 4px 6px -4px rgb(0 0 0 / 0.15);
@@ -176,7 +176,12 @@ body {
 .input-retro:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.2);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.input-retro::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
 }
 
 /* Modern Article Card Styles */
@@ -194,6 +199,12 @@ body {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
   border-color: var(--color-primary);
+}
+
+.article-meta {
+  color: var(--color-text-secondary);
+  opacity: 0.9;
+  font-weight: 500;
 }
 
 /* Modern Link Styles */

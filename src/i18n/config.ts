@@ -32,10 +32,21 @@ i18n
         translation: zhTranslations
       }
     },
+    lng: 'en',
     fallbackLng: 'en',
     debug: process.env.NODE_ENV === 'development',
     interpolation: {
       escapeValue: false
+    },
+    detection: {
+      order: ['localStorage', 'querystring', 'cookie', 'navigator'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'preferredLanguage',
+      lookupQuerystring: 'lng',
+      lookupCookie: 'i18next',
+      lookupFromPathIndex: 1,
+      lookupFromSubdomainIndex: 1,
+      checkWhitelist: true
     }
   });
 

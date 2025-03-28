@@ -262,7 +262,7 @@ export default function Home() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="input-retro w-full py-3 pl-12 pr-4 rounded-none"
             />
-            <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" />
+            <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[var(--color-ink)] opacity-60" />
           </div>
           <div className="mt-4 flex gap-4 justify-center">
             <select
